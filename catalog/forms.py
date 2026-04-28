@@ -4,18 +4,21 @@ from django.contrib.auth.models import User
 from .models import ContactMessage, CommunityWaitlist, MemberProfile, ForumTopic, ForumReply, ForumCategory, ForumReport
 
 _INPUT_CLASS = (
-    'w-full bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-3 '
-    'focus:outline-none focus:border-yellow-400 transition-colors placeholder-gray-500'
+    'w-full bg-gray-900 border border-gray-700/80 text-white rounded-xl px-4 py-3 '
+    'focus:outline-none focus:border-yellow-400/70 focus:bg-gray-800/80 transition-all duration-150 '
+    'placeholder-gray-600 text-sm min-h-[46px]'
 )
 
 _TEXTAREA_CLASS = (
-    'w-full bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-3 '
-    'focus:outline-none focus:border-yellow-400 transition-colors resize-none placeholder-gray-500'
+    'w-full bg-gray-900 border border-gray-700/80 text-white rounded-xl px-4 py-3 '
+    'focus:outline-none focus:border-yellow-400/70 focus:bg-gray-800/80 transition-all duration-150 '
+    'resize-none placeholder-gray-600 text-sm'
 )
 
 _SELECT_CLASS = (
-    'w-full bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-3 '
-    'focus:outline-none focus:border-yellow-400 transition-colors appearance-none cursor-pointer'
+    'w-full bg-gray-900 border border-gray-700/80 text-white rounded-xl px-4 py-3 '
+    'focus:outline-none focus:border-yellow-400/70 transition-all duration-150 '
+    'appearance-none cursor-pointer text-sm min-h-[46px]'
 )
 
 _CHECKBOX_CLASS = 'w-4 h-4 rounded border-gray-600 bg-gray-800 text-yellow-400 focus:ring-yellow-400'
@@ -27,19 +30,22 @@ class ContactForm(forms.ModelForm):
         fields = ['name', 'phone', 'interest', 'message']
         widgets = {
             'name': forms.TextInput(attrs={
-                'placeholder': 'Numele tău',
+                'placeholder': 'ex. Ion Popescu',
                 'class': _INPUT_CLASS,
+                'autocomplete': 'name',
             }),
             'phone': forms.TextInput(attrs={
-                'placeholder': 'Numărul tău de telefon (opțional)',
+                'placeholder': 'ex. 07xx xxx xxx',
                 'class': _INPUT_CLASS,
+                'autocomplete': 'tel',
+                'inputmode': 'tel',
             }),
             'interest': forms.Select(attrs={
                 'class': _SELECT_CLASS,
             }),
             'message': forms.Textarea(attrs={
-                'placeholder': 'Mesajul tău...',
-                'rows': 5,
+                'placeholder': 'ex. Sunt interesat de un model Sea-Doo RXT-X...',
+                'rows': 4,
                 'class': _TEXTAREA_CLASS,
             }),
         }

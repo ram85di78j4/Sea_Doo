@@ -43,39 +43,35 @@
     </div>
 
     <!-- Content -->
-    <div class="relative z-10 text-center px-4 max-w-5xl mx-auto pt-16 sm:pt-20">
+    <div class="relative z-10 text-center px-4 max-w-4xl mx-auto pt-16 sm:pt-20">
 
-        <div class="inline-flex items-center gap-2 bg-yellow-400/10 border border-yellow-400/25 text-yellow-400 text-xs font-semibold px-4 py-1.5 rounded-full mb-7 uppercase tracking-widest">
+        <div class="inline-flex items-center gap-2 bg-yellow-400/10 border border-yellow-400/25 text-yellow-400 text-xs font-medium px-4 py-1.5 rounded-full mb-7 uppercase tracking-widest fade-up">
             <span class="w-1.5 h-1.5 bg-yellow-400 rounded-full animate-pulse"></span>
-            Colecție Privată · România · Est. 2024
+            Colecție privată de jet-ski-uri · România
         </div>
 
-        <h1 class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black leading-[0.9] mb-5">
+        <h1 class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black leading-[0.93] mb-5 fade-up fade-up-1">
             <span class="block text-white mb-2">Pasiune. Apă.</span>
             <span class="text-gradient">Libertate.</span>
         </h1>
 
-        <p class="text-lg sm:text-xl md:text-2xl text-gray-400 font-light max-w-2xl mx-auto mb-3 leading-relaxed">
-            Catalog exclusiv de jet-ski și prima comunitate serioasă din România.
-        </p>
-        <p class="text-gray-600 text-sm md:text-base mb-10">
-            Sea-Doo · Yamaha · Kawasaki
-            <span class="text-cyan-400 font-medium"> — pentru pasionați, de la pasionați.</span>
+        <p class="text-base sm:text-lg md:text-xl text-gray-400 max-w-xl mx-auto mb-10 leading-relaxed fade-up fade-up-2">
+            Catalogul și comunitatea de jet-ski pentru pasionații din România.
         </p>
 
-        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <div class="flex flex-col sm:flex-row gap-3 justify-center fade-up fade-up-3">
             <a href="{% url 'catalog_list' %}"
-               class="w-full sm:w-auto bg-yellow-400 text-gray-950 font-bold px-8 py-3.5 rounded-full text-base hover:bg-yellow-300 transition-all hover:shadow-[0_0_36px_rgba(251,191,36,0.35)] transform hover:-translate-y-0.5 active:translate-y-0">
+               class="w-full sm:w-auto bg-yellow-400 text-gray-950 font-bold px-8 py-3.5 rounded-full text-base hover:bg-yellow-300 transition-all duration-200 hover:shadow-[0_0_32px_rgba(251,191,36,0.35)] hover:scale-[1.02] active:scale-100">
                 Explorează colecția
             </a>
             <a href="{% url 'comunitate' %}"
-               class="w-full sm:w-auto border-2 border-cyan-400/60 text-cyan-400 font-bold px-8 py-3.5 rounded-full text-base hover:bg-cyan-400 hover:text-gray-950 transition-all transform hover:-translate-y-0.5 active:translate-y-0">
+               class="w-full sm:w-auto border-2 border-cyan-400/60 text-cyan-400 font-bold px-8 py-3.5 rounded-full text-base hover:bg-cyan-400 hover:text-gray-950 transition-all duration-200 hover:scale-[1.02] active:scale-100">
                 Intră în comunitate
             </a>
         </div>
 
         <!-- Stats row -->
-        <div class="flex flex-wrap justify-center gap-6 sm:gap-10 mt-14 pt-8 border-t border-white/5">
+        <div class="flex flex-wrap justify-center gap-6 sm:gap-10 mt-12 pt-8 border-t border-white/5 fade-up fade-up-4">
             <div class="text-center">
                 <div class="text-3xl font-black text-yellow-400">{{ recent|length }}+</div>
                 <div class="text-gray-600 text-sm mt-1">Modele în catalog</div>
@@ -136,7 +132,7 @@
 <!-- ======================================
      ABOUT SECTION
      ====================================== -->
-<section id="about" class="py-28 bg-gray-900">
+<section id="about" class="py-14 md:py-24 bg-gray-900">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
@@ -167,8 +163,7 @@
                 <div class="rounded-2xl overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700/60 aspect-[4/3] flex items-center justify-center">
                     <div class="text-center p-10">
                         <div class="text-8xl mb-5">🌊</div>
-                        <p class="text-gray-500 text-sm">Foto colecție personală</p>
-                        <p class="text-gray-700 text-xs mt-1">Adaugă imagini din Admin → Jet-Ski-uri</p>
+                        <p class="text-gray-600 text-sm">Foto colecție personală</p>
                     </div>
                 </div>
                 <!-- Glow accents -->
@@ -247,13 +242,13 @@
      FEATURED COLLECTION
      ====================================== -->
 {% if featured %}
-<section id="collection" class="py-28 bg-gray-950">
+<section id="collection" class="py-14 md:py-24 bg-gray-950">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        <div class="text-center mb-16">
+        <div class="text-center mb-12">
             <span class="text-yellow-400 text-xs font-semibold uppercase tracking-widest mb-4 block">Colecție</span>
-            <h2 class="text-4xl md:text-5xl font-black mb-4">Favoritele colecției</h2>
-            <p class="text-gray-500 text-lg max-w-xl mx-auto">Fiecare mașinărie are propria poveste. Acestea sunt cele care au rămas în suflet.</p>
+            <h2 class="text-3xl md:text-4xl font-black mb-3">Favoritele colecției</h2>
+            <p class="text-gray-500 max-w-lg mx-auto">Fiecare mașinărie are propria poveste. Acestea sunt cele care au rămas în suflet.</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -316,7 +311,7 @@
 {% else %}
 <!-- Show recent if no favorites are set yet -->
 {% if recent %}
-<section id="collection" class="py-28 bg-gray-950">
+<section id="collection" class="py-14 md:py-24 bg-gray-950">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
             <span class="text-yellow-400 text-xs font-semibold uppercase tracking-widest mb-4 block">Colecție</span>
@@ -364,7 +359,7 @@
 <!-- ======================================
      SEA-DOO FEATURED SECTION
      ====================================== -->
-<section class="py-28 bg-gradient-to-br from-gray-900 via-blue-950/15 to-gray-950 relative overflow-hidden">
+<section class="py-14 md:py-24 bg-gradient-to-br from-gray-900 via-blue-950/15 to-gray-950 relative overflow-hidden">
     <div class="absolute inset-0 pointer-events-none">
         <div class="absolute top-1/2 right-0 -translate-y-1/2 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl"></div>
         <div class="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-blue-900/10 rounded-full blur-3xl"></div>
@@ -416,7 +411,6 @@
                     <div class="text-center p-14">
                         <div class="text-9xl mb-6">🌊</div>
                         <p class="text-blue-300 font-bold text-xl">Sea-Doo RXT-X 300</p>
-                        <p class="text-gray-600 text-sm mt-2">Adaugă imagine din Admin Panel</p>
                     </div>
                 </div>
                 <div class="absolute -bottom-4 -right-4 bg-yellow-400 text-gray-950 font-black text-xs px-4 py-2 rounded-xl shadow-lg">
@@ -487,29 +481,29 @@
 <!-- ======================================
      FORUM PREVIEW SECTION
      ====================================== -->
-<section id="forum" class="py-28 bg-gray-950">
+<section id="forum" class="py-14 md:py-24 bg-gray-950">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        <div class="text-center mb-16">
+        <div class="text-center mb-12">
             <span class="text-cyan-400 text-xs font-semibold uppercase tracking-widest mb-4 block">Comunitate</span>
-            <h2 class="text-4xl md:text-5xl font-black mb-4">Forum Jet-Ski România</h2>
-            <p class="text-gray-500 text-lg max-w-2xl mx-auto">
-                Alătură-te primei comunități serioase de jet-ski din România. Schimb de experiențe, sfaturi, trasee și evenimente.
+            <h2 class="text-3xl md:text-4xl font-black mb-3">Forum Jet-Ski România</h2>
+            <p class="text-gray-500 max-w-xl mx-auto">
+                Schimb de experiențe, sfaturi, trasee și evenimente între pasionații din România.
             </p>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-14">
             {% for category in forum_categories %}
-            <a href="{% url 'forum_index' %}" class="bg-gray-900 border border-gray-800 rounded-2xl p-5 hover:border-cyan-400/25 transition-all group hover:bg-gray-900/80 block">
+            <a href="{% url 'forum_index' %}" class="bg-gray-900 border border-gray-800 rounded-2xl p-5 hover:border-cyan-400/25 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200 group h-full block">
                 <div class="flex flex-col sm:flex-row items-center sm:items-start gap-3 text-center sm:text-left">
                     <div class="w-12 h-12 bg-gray-800 group-hover:bg-cyan-400/10 rounded-xl flex items-center justify-center text-2xl transition-colors flex-shrink-0">
                         {{ category.icon }}
                     </div>
                     <div>
-                        <h3 class="text-white font-semibold text-sm mb-1 group-hover:text-cyan-400 transition-colors">
+                        <h3 class="text-white font-semibold text-sm mb-1.5 group-hover:text-cyan-400 transition-colors">
                             {{ category.name }}
                         </h3>
-                        <p class="text-gray-600 text-xs leading-relaxed">{{ category.description }}</p>
+                        <p class="text-gray-500 text-xs leading-relaxed">{{ category.description }}</p>
                     </div>
                 </div>
             </a>
@@ -546,13 +540,13 @@
 <!-- ======================================
      BRANDS SECTION
      ====================================== -->
-<section class="py-20 bg-gray-950 border-t border-white/5">
+<section class="py-14 md:py-20 bg-gray-950 border-t border-white/5">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        <div class="text-center mb-12">
+        <div class="text-center mb-10">
             <span class="text-yellow-400 text-xs font-semibold uppercase tracking-widest mb-3 block">Branduri urmărite</span>
             <h2 class="text-3xl md:text-4xl font-black">Mașinăriile care definesc sportul</h2>
-            <p class="text-gray-500 mt-3 max-w-xl mx-auto">Trei branduri. Aceeași pasiune pentru apă și viteză.</p>
+            <p class="text-gray-500 mt-2 max-w-lg mx-auto text-sm">Trei branduri. Aceeași pasiune pentru apă și viteză.</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -622,13 +616,13 @@
 <!-- ======================================
      PENTRU CINE SECTION
      ====================================== -->
-<section class="py-20 bg-gray-900 border-t border-white/5">
+<section class="py-14 md:py-20 bg-gray-900 border-t border-white/5">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        <div class="text-center mb-12">
+        <div class="text-center mb-10">
             <span class="text-cyan-400 text-xs font-semibold uppercase tracking-widest mb-3 block">Comunitate</span>
             <h2 class="text-3xl md:text-4xl font-black">Pentru cine este această comunitate</h2>
-            <p class="text-gray-500 mt-3 max-w-2xl mx-auto">Indiferent de experiență sau scop, ai locul tău aici.</p>
+            <p class="text-gray-500 mt-2 max-w-xl mx-auto text-sm">Indiferent de experiență sau scop, ai locul tău aici.</p>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -747,7 +741,7 @@
 <!-- ======================================
      FINAL CTA BLOCK
      ====================================== -->
-<section class="py-24 bg-gradient-to-br from-gray-950 via-yellow-950/20 to-gray-950 border-t border-white/5">
+<section class="py-14 md:py-24 bg-gradient-to-br from-gray-950 via-yellow-950/20 to-gray-950 border-t border-white/5">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
 
         <div class="inline-flex items-center gap-2 bg-yellow-400/10 border border-yellow-400/20 text-yellow-400 text-xs font-semibold px-4 py-1.5 rounded-full mb-8 uppercase tracking-widest">
@@ -755,23 +749,23 @@
             Alătură-te acum
         </div>
 
-        <h2 class="text-3xl md:text-5xl font-black text-white mb-6 leading-tight">
+        <h2 class="text-3xl md:text-4xl font-black text-white mb-5 leading-snug">
             Vrei să faci parte din prima<br>
             <span class="text-gradient">comunitate jet-ski premium</span><br>
             din România?
         </h2>
 
-        <p class="text-gray-500 text-lg mb-10 max-w-2xl mx-auto">
-            Sute de pasionați așteaptă lansarea. Locurile de fondator sunt limitate — asigură-ți locul înainte de deschidere.
+        <p class="text-gray-400 mb-8 max-w-lg mx-auto text-sm sm:text-base">
+            Locurile de fondator sunt limitate — asigură-ți locul înainte de deschidere.
         </p>
 
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <div class="flex flex-col sm:flex-row gap-3 justify-center">
             <a href="{% url 'comunitate' %}#inscrie-te"
-               class="bg-yellow-400 text-gray-950 font-bold px-10 py-4 rounded-full text-base hover:bg-yellow-300 transition-all hover:shadow-[0_0_40px_rgba(251,191,36,0.35)] transform hover:-translate-y-0.5">
+               class="w-full sm:w-auto bg-yellow-400 text-gray-950 font-bold px-9 py-3.5 rounded-full text-base hover:bg-yellow-300 transition-all duration-200 hover:shadow-[0_0_36px_rgba(251,191,36,0.35)] hover:scale-[1.02] active:scale-100">
                 Intră pe lista de lansare
             </a>
             <a href="{% url 'catalog_list' %}"
-               class="border-2 border-gray-700 text-gray-300 font-bold px-10 py-4 rounded-full text-base hover:border-yellow-400/50 hover:text-yellow-400 transition-all transform hover:-translate-y-0.5">
+               class="w-full sm:w-auto border-2 border-gray-700 text-gray-300 font-bold px-9 py-3.5 rounded-full text-base hover:border-yellow-400/50 hover:text-yellow-400 transition-all duration-200">
                 Vezi colecția
             </a>
         </div>
@@ -804,7 +798,7 @@
 <!-- ======================================
      CONTACT SECTION
      ====================================== -->
-<section id="contact" class="py-28 bg-gray-900">
+<section id="contact" class="py-14 md:py-24 bg-gray-900">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
 
@@ -837,13 +831,13 @@
             <div>
                 <div class="bg-gray-950 border border-gray-800 rounded-2xl p-8">
                     <h3 class="text-white font-bold text-xl mb-6">Trimite un mesaj</h3>
-                    <form method="POST" action="{% url 'home' %}#contact">
+                    <form method="POST" action="{% url 'home' %}#contact" novalidate>
                         {% csrf_token %}
-                        <div class="space-y-5">
+                        <div class="space-y-4">
 
                             <div>
-                                <label class="block text-gray-400 text-sm font-medium mb-2">
-                                    {{ form.name.label }} *
+                                <label class="block text-gray-400 text-xs font-semibold uppercase tracking-wide mb-1.5">
+                                    {{ form.name.label }} <span class="text-yellow-400">*</span>
                                 </label>
                                 {{ form.name }}
                                 {% if form.name.errors %}
@@ -852,22 +846,22 @@
                             </div>
 
                             <div>
-                                <label class="block text-gray-400 text-sm font-medium mb-2">
-                                    {{ form.phone.label }}
+                                <label class="block text-gray-400 text-xs font-semibold uppercase tracking-wide mb-1.5">
+                                    {{ form.phone.label }} <span class="text-gray-600 font-normal normal-case tracking-normal">(opțional)</span>
                                 </label>
                                 {{ form.phone }}
                             </div>
 
                             <div>
-                                <label class="block text-gray-400 text-sm font-medium mb-2">
+                                <label class="block text-gray-400 text-xs font-semibold uppercase tracking-wide mb-1.5">
                                     {{ form.interest.label }}
                                 </label>
                                 {{ form.interest }}
                             </div>
 
                             <div>
-                                <label class="block text-gray-400 text-sm font-medium mb-2">
-                                    {{ form.message.label }} *
+                                <label class="block text-gray-400 text-xs font-semibold uppercase tracking-wide mb-1.5">
+                                    {{ form.message.label }} <span class="text-yellow-400">*</span>
                                 </label>
                                 {{ form.message }}
                                 {% if form.message.errors %}
@@ -876,7 +870,7 @@
                             </div>
 
                             <button type="submit"
-                                    class="w-full bg-yellow-400 text-gray-950 font-bold py-4 rounded-xl hover:bg-yellow-300 transition-all hover:shadow-[0_0_24px_rgba(251,191,36,0.25)] text-base mt-2">
+                                    class="w-full bg-yellow-400 text-gray-950 font-bold py-3.5 rounded-xl hover:bg-yellow-300 transition-all duration-200 hover:shadow-[0_0_24px_rgba(251,191,36,0.3)] hover:scale-[1.01] active:scale-100 text-base">
                                 Trimite mesajul
                             </button>
 

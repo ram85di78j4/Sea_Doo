@@ -78,14 +78,14 @@
             <!-- Right: Form -->
             <div>
                 <div class="bg-gray-900 border border-gray-800 rounded-2xl p-8">
-                    <h3 class="text-white font-bold text-xl mb-6">Trimite un mesaj</h3>
-                    <form method="POST">
+                    <h3 class="text-white font-bold text-lg mb-5">Trimite un mesaj</h3>
+                    <form method="POST" novalidate>
                         {% csrf_token %}
                         <div class="space-y-4">
 
                             <div>
-                                <label class="block text-gray-400 text-sm font-medium mb-2">
-                                    {{ form.name.label }} *
+                                <label class="block text-gray-400 text-xs font-semibold uppercase tracking-wide mb-1.5">
+                                    {{ form.name.label }} <span class="text-yellow-400">*</span>
                                 </label>
                                 {{ form.name }}
                                 {% if form.name.errors %}
@@ -94,23 +94,22 @@
                             </div>
 
                             <div>
-                                <label class="block text-gray-400 text-sm font-medium mb-2">
-                                    {{ form.phone.label }}
-                                    <span class="text-gray-600 font-normal">(opțional)</span>
+                                <label class="block text-gray-400 text-xs font-semibold uppercase tracking-wide mb-1.5">
+                                    {{ form.phone.label }} <span class="text-gray-600 font-normal normal-case tracking-normal">(opțional)</span>
                                 </label>
                                 {{ form.phone }}
                             </div>
 
                             <div>
-                                <label class="block text-gray-400 text-sm font-medium mb-2">
+                                <label class="block text-gray-400 text-xs font-semibold uppercase tracking-wide mb-1.5">
                                     {{ form.interest.label }}
                                 </label>
                                 {{ form.interest }}
                             </div>
 
                             <div>
-                                <label class="block text-gray-400 text-sm font-medium mb-2">
-                                    {{ form.message.label }} *
+                                <label class="block text-gray-400 text-xs font-semibold uppercase tracking-wide mb-1.5">
+                                    {{ form.message.label }} <span class="text-yellow-400">*</span>
                                 </label>
                                 {{ form.message }}
                                 {% if form.message.errors %}
@@ -119,7 +118,7 @@
                             </div>
 
                             <button type="submit"
-                                    class="w-full bg-yellow-400 text-gray-950 font-bold py-3.5 rounded-xl hover:bg-yellow-300 transition-all hover:shadow-[0_0_24px_rgba(251,191,36,0.25)] text-base mt-1">
+                                    class="w-full bg-yellow-400 text-gray-950 font-bold py-3.5 rounded-xl hover:bg-yellow-300 transition-all duration-200 hover:shadow-[0_0_24px_rgba(251,191,36,0.3)] hover:scale-[1.01] active:scale-100 text-sm">
                                 Trimite mesajul
                             </button>
 
