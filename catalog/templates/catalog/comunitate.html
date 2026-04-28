@@ -1,0 +1,453 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Comunitate Jet-Ski România — {{ SITE_NAME }}{% endblock %}
+{% block meta_description %}Prima comunitate premium pentru pasionații de jet-ski din România. Înscrie-te pe lista de așteptare.{% endblock %}
+{% block og_title %}Comunitate Jet-Ski România — {{ SITE_NAME }}{% endblock %}
+{% block og_description %}Prima comunitate premium pentru pasionații de jet-ski din România. Sfaturi, trasee, evenimente și vânzări între membri.{% endblock %}
+
+{% block content %}
+<div class="pt-16">
+
+    <!-- ==================== HERO ==================== -->
+    <div class="relative bg-gradient-to-b from-gray-900 via-blue-950/10 to-gray-950 py-24 border-b border-white/5 overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(6,182,212,0.07),transparent_70%)] pointer-events-none"></div>
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
+            <span class="inline-flex items-center gap-2 bg-cyan-400/10 border border-cyan-400/20 text-cyan-400 text-xs font-semibold uppercase tracking-widest px-4 py-1.5 rounded-full mb-6">
+                În curând
+            </span>
+            <h1 class="text-4xl md:text-6xl font-black mb-6 leading-tight">
+                Prima comunitate premium<br>
+                <span class="text-cyan-400">pentru pasionații de jet-ski</span><br>
+                din România.
+            </h1>
+            <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
+                Nu un simplu grup de Facebook. O platformă serioasă, cu forum dedicat, trasee documentate,
+                sfaturi reale și oameni care chiar știu despre ce vorbesc.
+            </p>
+            <div class="flex flex-wrap gap-4 justify-center">
+                {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}"
+                   class="bg-yellow-400 text-gray-950 font-bold px-8 py-4 rounded-full hover:bg-yellow-300 transition-all hover:shadow-[0_0_32px_rgba(251,191,36,0.3)] text-base">
+                    Mergi la profilul tău
+                </a>
+                {% else %}
+                <a href="#inscrie-te"
+                   class="bg-cyan-400 text-gray-950 font-bold px-8 py-4 rounded-full hover:bg-cyan-300 transition-all hover:shadow-[0_0_32px_rgba(6,182,212,0.3)] text-base">
+                    Vreau să intru în comunitate
+                </a>
+                <a href="{% url 'register' %}"
+                   class="border-2 border-yellow-400/60 text-yellow-400 font-bold px-8 py-4 rounded-full hover:border-yellow-400 hover:bg-yellow-400 hover:text-gray-950 transition-all text-base">
+                    Creează cont
+                </a>
+                {% endif %}
+                {% if FORUM_EXTERNAL_URL %}
+                <a href="{{ FORUM_EXTERNAL_URL }}" target="_blank" rel="noopener"
+                   class="border-2 border-cyan-400/40 text-cyan-400 font-semibold px-8 py-4 rounded-full hover:border-cyan-400 transition-all text-base">
+                    {{ FORUM_EXTERNAL_URL }}
+                </a>
+                {% endif %}
+            </div>
+
+            {% if waitlist_count %}
+            <p class="text-gray-600 text-sm mt-8">
+                Deja <span class="text-cyan-400 font-bold">{{ waitlist_count }}</span> pasionat{% if waitlist_count != 1 %}i{% endif %} pe lista de așteptare.
+            </p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- ==================== BENEFICII ==================== -->
+    <section class="py-24 bg-gray-950">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="text-center mb-16">
+                <span class="text-yellow-400 text-xs font-semibold uppercase tracking-widest mb-4 block">De ce să te alături</span>
+                <h2 class="text-3xl md:text-4xl font-black">Ce găsești în comunitate</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <div class="bg-gray-900 border border-gray-800 rounded-2xl p-7 hover:border-yellow-400/20 transition-all">
+                    <div class="text-3xl mb-4">💬</div>
+                    <h3 class="text-white font-bold text-lg mb-2">Sfaturi reale de la pasionați</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">Nu răspunsuri copiate. Experiențe autentice de la oameni care au navigat pe aceleași ape și au rezolvat aceleași probleme.</p>
+                </div>
+
+                <div class="bg-gray-900 border border-gray-800 rounded-2xl p-7 hover:border-cyan-400/20 transition-all">
+                    <div class="text-3xl mb-4">🌊</div>
+                    <h3 class="text-white font-bold text-lg mb-2">Discuții Sea-Doo, Yamaha, Kawasaki</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">Secțiuni dedicate fiecărui brand major. Comparații, probleme cunoscute, modificări populare, experiențe de pe apă.</p>
+                </div>
+
+                <div class="bg-gray-900 border border-gray-800 rounded-2xl p-7 hover:border-yellow-400/20 transition-all">
+                    <div class="text-3xl mb-4">🔧</div>
+                    <h3 class="text-white font-bold text-lg mb-2">Service, mentenanță și accesorii</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">Ghiduri DIY, service-uri recomandate, furnizori de piese, liste de verificare înainte de sezon.</p>
+                </div>
+
+                <div class="bg-gray-900 border border-gray-800 rounded-2xl p-7 hover:border-blue-400/20 transition-all">
+                    <div class="text-3xl mb-4">🗺️</div>
+                    <h3 class="text-white font-bold text-lg mb-2">Trasee pe apă în România</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">Dunăre, Marea Neagră, lacuri, Delta. Trasee documentate cu puncte de acces, locuri de andocare și pericole cunoscute.</p>
+                </div>
+
+                <div class="bg-gray-900 border border-gray-800 rounded-2xl p-7 hover:border-yellow-400/20 transition-all">
+                    <div class="text-3xl mb-4">🏆</div>
+                    <h3 class="text-white font-bold text-lg mb-2">Evenimente și întâlniri</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">Ride-uri de grup, competiții, evenimente regionale. Organizat de comunitate, pentru comunitate.</p>
+                </div>
+
+                <div class="bg-gray-900 border border-gray-800 rounded-2xl p-7 hover:border-cyan-400/20 transition-all">
+                    <div class="text-3xl mb-4">🤝</div>
+                    <h3 class="text-white font-bold text-lg mb-2">Vânzări între membri</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">Marketplace de încredere în cadrul comunității. Vinde sau cumpără jet-ski-uri, piese și accesorii de la oameni verificați.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== CATEGORII FORUM ==================== -->
+    {% if categories %}
+    <section class="py-20 bg-gray-900 border-y border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
+                <div>
+                    <span class="text-cyan-400 text-xs font-semibold uppercase tracking-widest mb-3 block">Forum intern</span>
+                    <h2 class="text-3xl font-black">Categorii forum</h2>
+                    <p class="text-gray-500 mt-2">{{ categories|length }} categorii active</p>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                    <a href="{% url 'forum_index' %}"
+                       class="flex-shrink-0 inline-flex items-center gap-2 bg-yellow-400 text-gray-950 text-sm font-bold px-5 py-2.5 rounded-full hover:bg-yellow-300 transition-all">
+                        Mergi la forum
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                    {% if FORUM_EXTERNAL_URL %}
+                    <a href="{{ FORUM_EXTERNAL_URL }}" target="_blank" rel="noopener"
+                       class="flex-shrink-0 inline-flex items-center gap-2 border border-cyan-400/30 text-cyan-400 text-sm font-semibold px-5 py-2.5 rounded-full hover:border-cyan-400 hover:bg-cyan-400/5 transition-all">
+                        Forum extern
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                        </svg>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {% for cat in categories %}
+                <a href="{% url 'forum_category' cat.slug %}"
+                   class="bg-gray-950 border border-gray-800 rounded-xl p-5 flex items-start gap-4 hover:border-cyan-400/30 transition-all group">
+                    <div class="w-11 h-11 bg-gray-800 group-hover:bg-cyan-400/10 rounded-xl flex items-center justify-center text-xl flex-shrink-0 transition-colors">
+                        {{ cat.icon }}
+                    </div>
+                    <div class="min-w-0">
+                        <h3 class="text-white font-semibold text-sm group-hover:text-cyan-400 transition-colors mb-0.5">{{ cat.name }}</h3>
+                        {% if cat.description %}
+                        <p class="text-gray-600 text-xs leading-relaxed truncate">{{ cat.description }}</p>
+                        {% endif %}
+                        <p class="text-gray-700 text-xs mt-1">{{ cat.real_topics.count }} subiect{% if cat.real_topics.count != 1 %}e{% endif %}</p>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- ==================== SUBIECTE RECENTE ==================== -->
+    {% if use_real_topics or pinned_topics or latest_topics %}
+    <section class="py-20 bg-gray-950">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
+                <div class="text-center md:text-left">
+                    <span class="text-yellow-400 text-xs font-semibold uppercase tracking-widest mb-3 block">Activitate forum</span>
+                    <h2 class="text-3xl font-black">Subiecte recente</h2>
+                </div>
+                {% if use_real_topics %}
+                <a href="{% url 'topic_new' %}"
+                   class="flex-shrink-0 inline-flex items-center gap-2 bg-yellow-400 text-gray-950 text-sm font-bold px-5 py-2.5 rounded-full hover:bg-yellow-300 transition-all self-center">
+                    + Subiect nou
+                </a>
+                {% endif %}
+            </div>
+
+            {% if use_real_topics %}
+            <div class="space-y-2">
+                {% for topic in real_pinned %}
+                <a href="{% url 'topic_detail' topic.slug %}"
+                   class="bg-gray-900 border border-yellow-400/15 rounded-xl px-5 py-4 flex items-center gap-4 hover:border-yellow-400/30 transition-colors block">
+                    <span class="text-yellow-400 text-xs font-bold uppercase tracking-wider flex-shrink-0 bg-yellow-400/10 px-2 py-0.5 rounded">Fixat</span>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-white font-semibold text-sm truncate">{{ topic.title }}</p>
+                        <p class="text-gray-600 text-xs mt-0.5">{{ topic.category }} · de {{ topic.author.get_full_name|default:topic.author.email }}</p>
+                    </div>
+                    <div class="flex items-center gap-4 text-xs text-gray-600 flex-shrink-0">
+                        <span>{{ topic.replies_count }} răsp.</span>
+                        <span>{{ topic.views_count }} viz.</span>
+                    </div>
+                </a>
+                {% endfor %}
+                {% for topic in real_latest %}
+                <a href="{% url 'topic_detail' topic.slug %}"
+                   class="bg-gray-900 border border-gray-800 rounded-xl px-5 py-4 flex items-center gap-4 hover:border-gray-700 transition-colors block">
+                    <div class="w-2 h-2 rounded-full bg-cyan-400/40 flex-shrink-0"></div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-white font-medium text-sm truncate">{{ topic.title }}</p>
+                        <p class="text-gray-600 text-xs mt-0.5">{{ topic.category }} · de {{ topic.author.get_full_name|default:topic.author.email }}</p>
+                    </div>
+                    <div class="flex items-center gap-4 text-xs text-gray-600 flex-shrink-0">
+                        <span>{{ topic.replies_count }} răsp.</span>
+                        <span>{{ topic.views_count }} viz.</span>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="space-y-2">
+                {% for topic in pinned_topics %}
+                <div class="bg-gray-900 border border-yellow-400/15 rounded-xl px-5 py-4 flex items-center gap-4">
+                    <span class="text-yellow-400 text-xs font-bold uppercase tracking-wider flex-shrink-0 bg-yellow-400/10 px-2 py-0.5 rounded">Fixat</span>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-white font-semibold text-sm truncate">{{ topic.title }}</p>
+                        <p class="text-gray-600 text-xs mt-0.5">{{ topic.category }} · de {{ topic.author_name }}</p>
+                    </div>
+                    <div class="flex items-center gap-4 text-xs text-gray-600 flex-shrink-0">
+                        <span>{{ topic.replies_count }} răsp.</span>
+                        <span>{{ topic.views_count }} viz.</span>
+                    </div>
+                </div>
+                {% endfor %}
+                {% for topic in latest_topics %}
+                <div class="bg-gray-900 border border-gray-800 rounded-xl px-5 py-4 flex items-center gap-4 hover:border-gray-700 transition-colors">
+                    <div class="w-2 h-2 rounded-full bg-cyan-400/40 flex-shrink-0"></div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-white font-medium text-sm truncate">{{ topic.title }}</p>
+                        <p class="text-gray-600 text-xs mt-0.5">{{ topic.category }} · de {{ topic.author_name }}</p>
+                    </div>
+                    <div class="flex items-center gap-4 text-xs text-gray-600 flex-shrink-0">
+                        <span>{{ topic.replies_count }} răsp.</span>
+                        <span>{{ topic.views_count }} viz.</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- ==================== EVENIMENTE ==================== -->
+    {% if events %}
+    <section id="evenimente" class="py-20 bg-gray-950 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="text-center mb-12">
+                <span class="text-yellow-400 text-xs font-semibold uppercase tracking-widest mb-3 block">Evenimente planificate</span>
+                <h2 class="text-3xl font-black">Întâlniri și tururi</h2>
+                <p class="text-gray-500 mt-2">Fii acolo. Navighează cu noi.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {% for event in events %}
+                <div class="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden hover:border-yellow-400/20 transition-all group">
+                    <div class="aspect-video bg-gradient-to-br from-gray-800 to-blue-950/30 relative flex items-center justify-center">
+                        {% if event.image %}
+                        <img src="{{ event.image.url }}" alt="{{ event.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                        {% else %}
+                        <span class="text-5xl opacity-20">🏄</span>
+                        {% endif %}
+                        <div class="absolute top-3 left-3 bg-yellow-400 text-gray-950 text-xs font-black px-3 py-1 rounded-full">
+                            {{ event.event_date|date:"d M Y" }}
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex items-center gap-2 text-gray-500 text-xs mb-2">
+                            <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            {{ event.location }}
+                        </div>
+                        <h3 class="text-white font-bold text-base mb-2 group-hover:text-yellow-400 transition-colors">{{ event.title }}</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">{{ event.short_description }}</p>
+                        <a href="#inscrie-te"
+                           class="inline-flex items-center gap-1.5 mt-4 text-cyan-400 text-xs font-semibold hover:text-cyan-300 transition-colors">
+                            Vreau să particip
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+    </section>
+    {% endif %}
+
+
+    <!-- ==================== MEMBER WELCOME (logged in) ==================== -->
+    {% if user.is_authenticated %}
+    <section class="py-12 bg-gradient-to-r from-cyan-950/40 via-gray-900 to-yellow-950/30 border-t border-white/5">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="text-center md:text-left">
+                    <div class="inline-flex items-center gap-2 bg-green-400/10 border border-green-400/20 text-green-400 text-xs font-semibold px-4 py-1.5 rounded-full mb-3 uppercase tracking-widest">
+                        <span class="w-1.5 h-1.5 bg-green-400 rounded-full"></span>
+                        Membru activ
+                    </div>
+                    <h2 class="text-2xl font-black text-white">
+                        Bine ai venit, {{ request.user.first_name|default:request.user.email }}!
+                    </h2>
+                    <p class="text-gray-500 text-sm mt-1">Ești parte din comunitate. Contul tău este activ.</p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-3 flex-shrink-0">
+                    <a href="{% url 'profile' %}"
+                       class="bg-yellow-400 text-gray-950 font-bold px-6 py-3 rounded-full hover:bg-yellow-300 transition-all text-sm">
+                        Profilul meu
+                    </a>
+                    <a href="{% url 'profile_edit' %}"
+                       class="border border-gray-700 text-gray-400 font-semibold px-6 py-3 rounded-full hover:border-yellow-400/50 hover:text-yellow-400 transition-all text-sm">
+                        Editează profilul
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+
+    <!-- ==================== WAITLIST FORM ==================== -->
+    {% if not user.is_authenticated %}
+    <section id="inscrie-te" class="py-24 bg-gradient-to-b from-gray-900 to-gray-950 border-t border-white/5">
+        <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="text-center mb-12">
+                <span class="text-cyan-400 text-xs font-semibold uppercase tracking-widest mb-4 block">Lista de așteptare</span>
+                <h2 class="text-3xl md:text-4xl font-black mb-4">Vreau să intru în comunitate</h2>
+                <p class="text-gray-500 text-base">
+                    Înregistrează-ți interesul acum. Vei fi printre primii notificați la lansarea platformei complete.
+                </p>
+            </div>
+
+            {% if request.GET.joined %}
+            <div class="bg-green-900/40 border border-green-600/40 rounded-2xl p-6 mb-6 flex items-start gap-4">
+                <div class="w-10 h-10 bg-green-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-green-300 font-bold mb-1">Ești pe listă! 🎉</h3>
+                    <p class="text-green-400/80 text-sm">Felicitări! Înscrierea ta a fost înregistrată. Vei fi printre primii notificați când comunitatea se deschide oficial.</p>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="bg-gray-900 border border-gray-800 rounded-2xl p-8">
+                <form method="POST" action="#inscrie-te">
+                    {% csrf_token %}
+                    <div class="space-y-5">
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-gray-400 text-sm font-medium mb-2">
+                                    {{ waitlist_form.name.label }} *
+                                </label>
+                                {{ waitlist_form.name }}
+                                {% if waitlist_form.name.errors %}
+                                <p class="text-red-400 text-xs mt-1.5">{{ waitlist_form.name.errors.0 }}</p>
+                                {% endif %}
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 text-sm font-medium mb-2">
+                                    {{ waitlist_form.email.label }} *
+                                </label>
+                                {{ waitlist_form.email }}
+                                {% if waitlist_form.email.errors %}
+                                <p class="text-red-400 text-xs mt-1.5">{{ waitlist_form.email.errors.0 }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-gray-400 text-sm font-medium mb-2">
+                                    {{ waitlist_form.city.label }}
+                                </label>
+                                {{ waitlist_form.city }}
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 text-sm font-medium mb-2">
+                                    {{ waitlist_form.favorite_brand.label }}
+                                </label>
+                                {{ waitlist_form.favorite_brand }}
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-400 text-sm font-medium mb-2">
+                                {{ waitlist_form.message.label }}
+                            </label>
+                            {{ waitlist_form.message }}
+                        </div>
+
+                        <div class="flex items-center gap-3 bg-gray-800/50 border border-gray-700 rounded-xl px-4 py-3">
+                            {{ waitlist_form.owns_jetski }}
+                            <label class="text-gray-300 text-sm cursor-pointer select-none">
+                                {{ waitlist_form.owns_jetski.label }}
+                            </label>
+                        </div>
+
+                        <div class="flex items-start gap-3 bg-cyan-900/20 border border-cyan-400/20 rounded-xl px-4 py-3">
+                            {{ waitlist_form.wants_updates }}
+                            <label class="text-gray-300 text-sm cursor-pointer select-none leading-relaxed">
+                                {{ waitlist_form.wants_updates.label }}
+                            </label>
+                        </div>
+
+                        <button type="submit"
+                                class="w-full bg-cyan-400 text-gray-950 font-bold py-4 rounded-xl hover:bg-cyan-300 transition-all hover:shadow-[0_0_28px_rgba(6,182,212,0.3)] text-base mt-2">
+                            Înscrie-mă pe lista de așteptare
+                        </button>
+
+                    </div>
+                </form>
+            </div>
+
+            <div class="mt-6 flex flex-col sm:flex-row items-center justify-center gap-6 text-xs text-gray-600">
+                <div class="flex items-center gap-1.5">
+                    <svg class="w-3.5 h-3.5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                    </svg>
+                    <span>Zero spam, garantat</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <svg class="w-3.5 h-3.5 text-yellow-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                    </svg>
+                    <span>Notificare la lansare</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <svg class="w-3.5 h-3.5 text-cyan-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                    <span>Acces prioritar la comunitate</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    {% endif %}
+
+</div>
+{% endblock %}

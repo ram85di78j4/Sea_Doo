@@ -1,0 +1,63 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Politica de Confidențialitate — Sea-Doo România{% endblock %}
+{% block meta_description %}Politica de confidențialitate a platformei Sea-Doo România. Cum gestionăm datele personale.{% endblock %}
+
+{% block content %}
+<div class="pt-16">
+
+    <div class="bg-gradient-to-b from-gray-900 to-gray-950 py-16 border-b border-white/5">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <span class="text-yellow-400 text-xs font-semibold uppercase tracking-widest mb-4 block">Legal</span>
+            <h1 class="text-3xl md:text-4xl font-black mb-2">Politica de Confidențialitate</h1>
+            <p class="text-gray-600 text-sm">Ultima actualizare: Ianuarie 2025</p>
+        </div>
+    </div>
+
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="space-y-8 text-gray-400 leading-relaxed">
+
+            <section>
+                <h2 class="text-white font-bold text-xl mb-3">1. Ce date colectăm</h2>
+                <p>Când utilizezi formularul de contact, colectăm:</p>
+                <ul class="list-disc list-inside mt-2 space-y-1 text-sm">
+                    <li>Numele tău</li>
+                    <li>Adresa de email</li>
+                    <li>Conținutul mesajului</li>
+                    <li>Data și ora trimiterii</li>
+                </ul>
+                <p class="mt-3">Nu colectăm date de autentificare, date financiare sau alte informații sensibile.</p>
+            </section>
+
+            <section>
+                <h2 class="text-white font-bold text-xl mb-3">2. Cum folosim datele</h2>
+                <p>Datele colectate prin formularul de contact sunt folosite exclusiv pentru a răspunde solicitărilor tale. Nu le vindem, nu le transferăm și nu le folosim în scopuri de marketing fără acordul tău explicit.</p>
+            </section>
+
+            <section>
+                <h2 class="text-white font-bold text-xl mb-3">3. Stocarea datelor</h2>
+                <p>Mesajele sunt stocate în baza de date a website-ului și sunt accesate doar de administratorul platformei. Datele sunt păstrate atâta timp cât sunt relevante pentru comunicarea inițiată.</p>
+            </section>
+
+            <section>
+                <h2 class="text-white font-bold text-xl mb-3">4. Cookie-uri</h2>
+                <p>Website-ul utilizează cookie-uri tehnice necesare funcționării (sesiune Django, protecție CSRF). Nu utilizăm cookie-uri de tracking sau publicitate.</p>
+            </section>
+
+            <section>
+                <h2 class="text-white font-bold text-xl mb-3">5. Drepturile tale</h2>
+                <p>Conform GDPR, ai dreptul la acces, rectificare și ștergere a datelor personale. Pentru orice solicitare, contactează-ne prin
+                    <a href="{% url 'contact_page' %}" class="text-yellow-400 hover:text-yellow-300">formularul de contact</a>.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-white font-bold text-xl mb-3">6. Modificări</h2>
+                <p>Ne rezervăm dreptul de a actualiza această politică. Modificările semnificative vor fi comunicate pe website.</p>
+            </section>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}

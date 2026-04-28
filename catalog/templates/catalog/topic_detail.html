@@ -1,0 +1,294 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}{{ topic.title }} — Forum — {{ SITE_NAME }}{% endblock %}
+{% block meta_description %}{{ topic.content|truncatechars:160 }}{% endblock %}
+
+{% block content %}
+<div class="pt-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+
+    {% if messages %}
+    {% for msg in messages %}
+    <div class="{% if msg.tags == 'error' %}bg-red-900/40 border-red-600/40 text-red-300{% else %}bg-green-900/40 border-green-600/40 text-green-300{% endif %} border rounded-xl px-5 py-3 mb-6 text-sm">
+        {{ msg }}
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <!-- Breadcrumb -->
+    <nav class="flex items-center gap-2 text-xs text-gray-600 mb-8 flex-wrap">
+        <a href="{% url 'forum_index' %}" class="hover:text-yellow-400 transition-colors">Forum</a>
+        <svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+        <a href="{% url 'forum_category' topic.category.slug %}" class="hover:text-yellow-400 transition-colors">{{ topic.category.name }}</a>
+        <svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+        <span class="text-gray-400 truncate max-w-xs">{{ topic.title }}</span>
+    </nav>
+
+    <!-- Two-column layout -->
+    <div class="flex flex-col lg:flex-row gap-6">
+
+        <!-- Main column -->
+        <div class="flex-1 min-w-0">
+
+            <!-- Topic card -->
+            <div class="bg-gray-900 border border-gray-800 rounded-2xl p-7 mb-4">
+                <div class="flex flex-wrap items-center gap-2 mb-3">
+                    {% if topic.is_pinned %}
+                    <span class="text-yellow-400 text-xs font-bold uppercase tracking-wider bg-yellow-400/10 border border-yellow-400/20 px-2.5 py-0.5 rounded-full">Fixat</span>
+                    {% endif %}
+                    {% if topic.is_locked %}
+                    <span class="text-gray-500 text-xs font-bold uppercase tracking-wider bg-gray-800 border border-gray-700 px-2.5 py-0.5 rounded-full">Blocat</span>
+                    {% endif %}
+                    <span class="text-gray-600 text-xs bg-gray-800 px-2.5 py-0.5 rounded-full">{{ topic.category.icon }} {{ topic.category.name }}</span>
+                </div>
+
+                <h1 class="text-2xl md:text-3xl font-black text-white mb-4 leading-tight">{{ topic.title }}</h1>
+
+                <!-- Stats bar -->
+                <div class="flex items-center gap-5 text-xs text-gray-600 mb-6 pb-4 border-b border-gray-800">
+                    <span class="flex items-center gap-1.5">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                        </svg>
+                        {{ topic.views_count }} vizualizări
+                    </span>
+                    <span class="flex items-center gap-1.5">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                        </svg>
+                        {{ reply_count }} răspuns{% if reply_count != 1 %}uri{% endif %}
+                    </span>
+                    <span>{{ topic.created_at|date:"d M Y" }}</span>
+                </div>
+
+                <div class="prose prose-invert max-w-none">
+                    <p class="text-gray-300 leading-relaxed whitespace-pre-wrap text-sm">{{ topic.content }}</p>
+                </div>
+
+                {% if user.is_authenticated and user != topic.author %}
+                <div class="flex justify-end mt-5 pt-4 border-t border-gray-800">
+                    {% if topic.pk in reported_topic_ids %}
+                    <span class="inline-flex items-center gap-1.5 text-gray-600 text-xs">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        Raportat
+                    </span>
+                    {% else %}
+                    <a href="{% url 'report_topic' topic.pk %}"
+                       class="inline-flex items-center gap-1.5 text-gray-600 hover:text-red-400 text-xs transition-colors">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                        </svg>
+                        Raportează subiect
+                    </a>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Replies -->
+            {% if page_obj.object_list %}
+            <div class="mb-4">
+                <div class="flex items-center justify-between mb-3">
+                    <h2 class="text-gray-500 text-xs font-semibold uppercase tracking-widest">
+                        {{ reply_count }} Răspuns{% if reply_count != 1 %}uri{% endif %}
+                    </h2>
+                    {% if page_obj.has_other_pages %}
+                    <span class="text-gray-700 text-xs">Pagina {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+                    {% endif %}
+                </div>
+                <div class="space-y-3">
+                    {% for reply in page_obj %}
+                    <div id="reply-{{ reply.pk }}" class="bg-gray-900 border border-gray-800 rounded-xl p-5">
+                        <div class="flex items-start justify-between gap-3 mb-3">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-lg bg-cyan-400/10 border border-cyan-400/15 flex items-center justify-center flex-shrink-0">
+                                    {% if reply.author.profile.avatar %}
+                                    <img src="{{ reply.author.profile.avatar.url }}" alt="" class="w-8 h-8 rounded-lg object-cover">
+                                    {% else %}
+                                    <span class="text-cyan-400 font-bold text-sm">
+                                        {{ reply.author.first_name|first|upper }}{% if not reply.author.first_name %}{{ reply.author.email|first|upper }}{% endif %}
+                                    </span>
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    <a href="{% url 'member_public_profile' reply.author.username %}" class="text-white text-sm font-semibold hover:text-cyan-400 transition-colors">
+                                        {{ reply.author.get_full_name|default:reply.author.email }}
+                                    </a>
+                                    <p class="text-gray-600 text-xs">{{ reply.created_at|date:"d M Y, H:i" }}</p>
+                                </div>
+                            </div>
+                            {% if user.is_authenticated and user != reply.author %}
+                            <div class="flex-shrink-0">
+                                {% if reply.pk in reported_reply_ids %}
+                                <span class="text-gray-700 text-xs">Raportat</span>
+                                {% else %}
+                                <a href="{% url 'report_reply' reply.pk %}"
+                                   class="inline-flex items-center gap-1 text-gray-700 hover:text-red-400 text-xs transition-colors">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                                    </svg>
+                                    Raportează
+                                </a>
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        <p class="text-gray-300 text-sm leading-relaxed whitespace-pre-wrap">{{ reply.content }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Reply pagination -->
+                {% if page_obj.has_other_pages %}
+                <div class="flex items-center justify-center gap-2 mt-4">
+                    {% if page_obj.has_previous %}
+                    <a href="?pagina={{ page_obj.previous_page_number }}#reply-form"
+                       class="bg-gray-800 border border-gray-700 text-gray-300 hover:text-white hover:border-gray-500 px-4 py-2 rounded-lg text-sm transition-colors">← Anterior</a>
+                    {% endif %}
+                    <span class="text-gray-600 text-sm px-2">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+                    {% if page_obj.has_next %}
+                    <a href="?pagina={{ page_obj.next_page_number }}#reply-form"
+                       class="bg-gray-800 border border-gray-700 text-gray-300 hover:text-white hover:border-gray-500 px-4 py-2 rounded-lg text-sm transition-colors">Următor →</a>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <!-- Rules reminder -->
+            <div class="flex items-center justify-between gap-4 bg-gray-900/50 border border-gray-800 rounded-xl px-4 py-3 mb-4">
+                <p class="text-gray-600 text-xs">Respectă regulile comunității. Conținutul ofensator va fi eliminat.</p>
+                <a href="{% url 'forum_rules' %}" class="flex-shrink-0 text-gray-600 hover:text-yellow-400 text-xs transition-colors">Regulile &rsaquo;</a>
+            </div>
+
+            <!-- Reply form -->
+            {% if user.is_authenticated %}
+                {% if topic.is_locked %}
+                <div class="bg-gray-900 border border-gray-800 rounded-xl px-5 py-4 flex items-center gap-3">
+                    <svg class="w-4 h-4 text-gray-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                    </svg>
+                    <p class="text-gray-500 text-sm">Acest subiect este blocat. Nu se mai pot adăuga răspunsuri.</p>
+                </div>
+                {% elif reply_form %}
+                <div id="reply-form" class="bg-gray-900 border border-gray-800 rounded-2xl p-6">
+                    <h3 class="text-white font-bold text-sm mb-4">Adaugă un răspuns</h3>
+                    <form method="POST" action="{% url 'topic_reply' topic.slug %}">
+                        {% csrf_token %}
+                        {{ reply_form.content }}
+                        {% if reply_form.content.errors %}
+                        <p class="text-red-400 text-xs mt-1.5">{{ reply_form.content.errors.0 }}</p>
+                        {% endif %}
+                        <div class="flex justify-end mt-4">
+                            <button type="submit"
+                                    class="bg-yellow-400 text-gray-950 font-bold px-6 py-2.5 rounded-xl hover:bg-yellow-300 transition-all hover:shadow-[0_0_20px_rgba(251,191,36,0.25)] text-sm">
+                                Postează răspuns
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                {% endif %}
+            {% else %}
+            <div class="bg-gray-900 border border-gray-800 rounded-2xl p-8 text-center">
+                <p class="text-gray-500 text-sm mb-4">Trebuie să fii autentificat pentru a răspunde.</p>
+                <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                    <a href="{% url 'login' %}?next={{ request.path }}#reply-form"
+                       class="bg-yellow-400 text-gray-950 font-bold px-5 py-2.5 rounded-xl hover:bg-yellow-300 transition-all text-sm">
+                        Autentifică-te
+                    </a>
+                    <a href="{% url 'register' %}"
+                       class="border border-gray-700 text-gray-300 font-semibold px-5 py-2.5 rounded-xl hover:border-yellow-400/40 transition-all text-sm">
+                        Creează cont
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+
+        </div><!-- /main column -->
+
+        <!-- Sidebar -->
+        <div class="w-full lg:w-72 flex-shrink-0 space-y-4">
+
+            <!-- Author card -->
+            <div class="bg-gray-900 border border-gray-800 rounded-2xl p-5">
+                <h3 class="text-gray-600 text-xs font-semibold uppercase tracking-widest mb-4">Autor</h3>
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-yellow-400/15 border border-yellow-400/20 flex items-center justify-center flex-shrink-0">
+                        {% if topic.author.profile.avatar %}
+                        <img src="{{ topic.author.profile.avatar.url }}" alt="" class="w-12 h-12 rounded-xl object-cover">
+                        {% else %}
+                        <span class="text-yellow-400 font-black text-xl">
+                            {{ topic.author.first_name|first|upper }}{% if not topic.author.first_name %}{{ topic.author.email|first|upper }}{% endif %}
+                        </span>
+                        {% endif %}
+                    </div>
+                    <div class="min-w-0">
+                        <p class="text-white font-bold text-sm truncate">{{ topic.author.get_full_name|default:topic.author.email }}</p>
+                        {% if topic.author.profile.city %}
+                        <p class="text-gray-600 text-xs truncate">📍 {{ topic.author.profile.city }}</p>
+                        {% endif %}
+                        <p class="text-gray-700 text-xs">din {{ topic.author.profile.created_at|date:"M Y" }}</p>
+                    </div>
+                </div>
+
+                {% with badges=topic.author.profile.get_badges %}
+                {% if badges %}
+                <div class="flex flex-wrap gap-1.5 mb-4">
+                    {% for badge in badges %}
+                    {% if badge.color == 'cyan' %}
+                    <span class="bg-cyan-400/10 border border-cyan-400/20 text-cyan-400 text-xs px-2 py-0.5 rounded-full">{{ badge.label }}</span>
+                    {% elif badge.color == 'yellow' %}
+                    <span class="bg-yellow-400/10 border border-yellow-400/20 text-yellow-400 text-xs px-2 py-0.5 rounded-full">{{ badge.label }}</span>
+                    {% elif badge.color == 'green' %}
+                    <span class="bg-green-400/10 border border-green-400/20 text-green-400 text-xs px-2 py-0.5 rounded-full">{{ badge.label }}</span>
+                    {% elif badge.color == 'orange' %}
+                    <span class="bg-orange-400/10 border border-orange-400/20 text-orange-400 text-xs px-2 py-0.5 rounded-full">{{ badge.label }}</span>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% endwith %}
+
+                {% if topic.author.profile.show_in_directory %}
+                <a href="{% url 'member_public_profile' topic.author.username %}"
+                   class="block w-full text-center bg-gray-800 hover:bg-gray-700 border border-gray-700 hover:border-cyan-400/40 text-gray-400 hover:text-cyan-400 text-xs font-semibold py-2 rounded-lg transition-all">
+                    Vezi profil public
+                </a>
+                {% endif %}
+            </div>
+
+            <!-- Related topics -->
+            {% if related_topics %}
+            <div class="bg-gray-900 border border-gray-800 rounded-2xl p-5">
+                <h3 class="text-gray-600 text-xs font-semibold uppercase tracking-widest mb-4">Subiecte similare</h3>
+                <div class="space-y-3">
+                    {% for rel in related_topics %}
+                    <a href="{% url 'topic_detail' rel.slug %}" class="block group">
+                        <p class="text-gray-300 text-xs font-medium group-hover:text-white transition-colors leading-snug">{{ rel.title|truncatechars:60 }}</p>
+                        <p class="text-gray-700 text-xs mt-0.5">{{ rel.created_at|date:"d M Y" }} · {{ rel.replies_count }} răsp.</p>
+                    </a>
+                    {% endfor %}
+                </div>
+                <div class="mt-4 pt-3 border-t border-gray-800">
+                    <a href="{% url 'forum_category' topic.category.slug %}"
+                       class="text-gray-700 hover:text-yellow-400 text-xs transition-colors">
+                        Toate din {{ topic.category.name }} &rsaquo;
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+
+        </div><!-- /sidebar -->
+
+    </div><!-- /two-column -->
+
+</div>
+</div>
+{% endblock %}

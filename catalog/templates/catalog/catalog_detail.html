@@ -1,0 +1,286 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}{{ jetski.title }} — Sea-Doo România{% endblock %}
+{% block meta_description %}{{ jetski.short_description|truncatewords:25 }}{% endblock %}
+{% block og_title %}{{ jetski.title }} — Sea-Doo România{% endblock %}
+{% block og_description %}{{ jetski.short_description|truncatewords:25 }}{% endblock %}
+{% block og_image %}{% if jetski.main_image %}{{ request.scheme }}://{{ request.get_host }}{{ jetski.main_image.url }}{% endif %}{% endblock %}
+
+{% block content %}
+<div class="pt-16">
+
+    <!-- Breadcrumb -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 border-b border-white/5">
+        <div class="flex items-center gap-2 text-sm text-gray-600">
+            <a href="{% url 'home' %}" class="hover:text-yellow-400 transition-colors">Acasă</a>
+            <span class="text-gray-700">›</span>
+            <a href="{% url 'catalog_list' %}" class="hover:text-yellow-400 transition-colors">Catalog</a>
+            <span class="text-gray-700">›</span>
+            <span class="text-gray-400 truncate max-w-xs">{{ jetski.title }}</span>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-14 items-start">
+
+            <!-- LEFT: Image & Media -->
+            <div class="lg:sticky lg:top-24">
+
+                <div class="rounded-2xl overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700/60 aspect-[4/3] relative">
+                    {% if jetski.main_image %}
+                        <img src="{{ jetski.main_image.url }}" alt="{{ jetski.title }}"
+                             class="w-full h-full object-cover"/>
+                    {% else %}
+                        <div class="w-full h-full flex flex-col items-center justify-center gap-3">
+                            <span class="text-8xl opacity-15">🚤</span>
+                            <p class="text-gray-700 text-sm">Imagine indisponibilă</p>
+                        </div>
+                    {% endif %}
+
+                    <!-- Status badge -->
+                    <div class="absolute top-4 right-4">
+                        <span class="status-badge-{{ jetski.status }} text-sm font-bold px-4 py-1.5 rounded-full shadow-lg">
+                            {{ jetski.get_status_display }}
+                        </span>
+                    </div>
+
+                    <!-- Year badge -->
+                    <div class="absolute top-4 left-4 bg-black/60 backdrop-blur text-white text-sm font-bold px-3 py-1.5 rounded-full">
+                        {{ jetski.year }}
+                    </div>
+                </div>
+
+                <!-- Video link -->
+                {% if jetski.video_url %}
+                <a href="{{ jetski.video_url }}" target="_blank" rel="noopener noreferrer"
+                   class="mt-4 flex items-center gap-4 bg-gray-900 border border-gray-800 hover:border-red-500/40 rounded-xl p-4 transition-colors group">
+                    <div class="w-11 h-11 bg-red-500/15 rounded-xl flex items-center justify-center text-red-400 group-hover:bg-red-500/25 transition-colors flex-shrink-0">
+                        ▶
+                    </div>
+                    <div>
+                        <p class="text-white text-sm font-semibold">Video disponibil</p>
+                        <p class="text-gray-500 text-xs mt-0.5">Click pentru a viziona →</p>
+                    </div>
+                </a>
+                {% endif %}
+
+                <!-- Quick specs summary card -->
+                <div class="mt-4 grid grid-cols-3 gap-3">
+                    <div class="bg-gray-900 border border-gray-800 rounded-xl p-3 text-center">
+                        <div class="text-yellow-400 font-black text-lg">{{ jetski.horsepower }}</div>
+                        <div class="text-gray-600 text-xs mt-0.5">CP</div>
+                    </div>
+                    <div class="bg-gray-900 border border-gray-800 rounded-xl p-3 text-center">
+                        <div class="text-cyan-400 font-black text-lg">{{ jetski.year }}</div>
+                        <div class="text-gray-600 text-xs mt-0.5">An</div>
+                    </div>
+                    <div class="bg-gray-900 border border-gray-800 rounded-xl p-3 text-center">
+                        <div class="text-white font-black text-sm leading-tight mt-1">{{ jetski.brand }}</div>
+                        <div class="text-gray-600 text-xs mt-0.5">Marcă</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT: Details -->
+            <div>
+
+                <div class="text-cyan-400 text-xs font-semibold uppercase tracking-widest mb-3">
+                    {{ jetski.brand }}
+                </div>
+                <h1 class="text-4xl md:text-5xl font-black text-white leading-tight mb-2">
+                    {{ jetski.title }}
+                </h1>
+                <p class="text-gray-500 text-xl font-light mb-6">
+                    {{ jetski.model }} &mdash; {{ jetski.year }}
+                </p>
+
+                <p class="text-gray-300 text-lg leading-relaxed mb-10">
+                    {{ jetski.short_description }}
+                </p>
+
+                <!-- Specs Grid -->
+                <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 mb-8">
+                    <h3 class="text-yellow-400 font-bold text-xs uppercase tracking-widest mb-6">
+                        Specificații tehnice
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4">
+
+                        <div class="bg-gray-800/50 rounded-xl p-4">
+                            <div class="text-gray-600 text-xs uppercase tracking-wider mb-1.5">Motor</div>
+                            <div class="text-white font-semibold text-sm">{{ jetski.engine }}</div>
+                        </div>
+
+                        <div class="bg-gray-800/50 rounded-xl p-4">
+                            <div class="text-gray-600 text-xs uppercase tracking-wider mb-1.5">Putere</div>
+                            <div class="text-yellow-400 font-black text-2xl">{{ jetski.horsepower }} <span class="text-base font-semibold">CP</span></div>
+                        </div>
+
+                        <div class="bg-gray-800/50 rounded-xl p-4">
+                            <div class="text-gray-600 text-xs uppercase tracking-wider mb-1.5">An fabricație</div>
+                            <div class="text-white font-semibold">{{ jetski.year }}</div>
+                        </div>
+
+                        <div class="bg-gray-800/50 rounded-xl p-4">
+                            <div class="text-gray-600 text-xs uppercase tracking-wider mb-1.5">Stare</div>
+                            <div class="text-white font-semibold">{{ jetski.condition }}</div>
+                        </div>
+
+                        <div class="bg-gray-800/50 rounded-xl p-4 col-span-2">
+                            <div class="text-gray-600 text-xs uppercase tracking-wider mb-1.5">Model complet</div>
+                            <div class="text-white font-semibold">{{ jetski.brand }} {{ jetski.model }}</div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Povestea acestui model -->
+                {% if jetski.full_description %}
+                <div class="mb-8">
+                    <h2 class="text-white font-bold text-xl mb-4">Povestea acestui model</h2>
+                    <div class="text-gray-400 leading-relaxed space-y-3 text-base">
+                        {{ jetski.full_description|linebreaks }}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- De ce merită văzut -->
+                {% if jetski.why_worth_seeing %}
+                <div class="bg-gradient-to-r from-cyan-400/5 to-transparent border-l-2 border-cyan-400/50 rounded-r-xl p-5 mb-8">
+                    <h2 class="text-cyan-400 font-bold text-xs uppercase tracking-widest mb-3">De ce merită văzut</h2>
+                    <div class="text-gray-300 leading-relaxed text-sm">
+                        {{ jetski.why_worth_seeing|linebreaks }}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- CTA: Vrei să discutăm? -->
+                <div class="bg-gray-900 border border-yellow-400/20 rounded-2xl p-6 mb-6">
+                    <h3 class="text-white font-bold text-base mb-2">Vrei să discutăm despre acest model?</h3>
+                    <p class="text-gray-500 text-sm mb-4">Am răspunsuri pentru orice întrebare despre colecție, achiziție sau experiența pe apă.</p>
+                    <a href="{% url 'contact_page' %}"
+                       class="inline-flex items-center gap-2 bg-yellow-400 text-gray-950 font-bold px-6 py-2.5 rounded-full hover:bg-yellow-300 transition-all text-sm">
+                        Scrie-mi acum
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- Action buttons -->
+                <div class="flex flex-wrap gap-4 pt-2">
+                    <a href="{% url 'catalog_list' %}"
+                       class="flex items-center gap-2 border border-gray-700 text-gray-400 hover:text-white hover:border-gray-500 font-semibold px-6 py-3 rounded-full transition-all text-sm">
+                        ← Înapoi la catalog
+                    </a>
+                    <a href="{% url 'contact_page' %}"
+                       class="flex items-center gap-2 bg-yellow-400 text-gray-950 font-bold px-7 py-3 rounded-full hover:bg-yellow-300 transition-all text-sm">
+                        Contactează-mă
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Gallery Section -->
+    {% if gallery %}
+    <div class="border-t border-white/5 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <h2 class="text-xl font-black mb-8">
+                Galerie foto <span class="text-yellow-400">{{ jetski.brand }} {{ jetski.model }}</span>
+            </h2>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                {% for img in gallery %}
+                <button onclick="openLightbox('{{ img.image.url }}', '{{ img.caption }}')"
+                        class="group relative aspect-square overflow-hidden rounded-xl bg-gray-900 border border-gray-800 hover:border-yellow-400/40 transition-all">
+                    <img src="{{ img.image.url }}" alt="{{ img.caption|default:jetski.title }}"
+                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+                    {% if img.caption %}
+                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
+                        <p class="text-white text-xs leading-snug">{{ img.caption }}</p>
+                    </div>
+                    {% endif %}
+                </button>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div id="lightbox" onclick="closeLightbox()"
+         class="fixed inset-0 bg-black/95 z-50 hidden items-center justify-center p-4">
+        <button onclick="closeLightbox()" class="absolute top-4 right-6 text-gray-400 hover:text-white text-4xl leading-none z-10">&times;</button>
+        <div class="max-w-5xl w-full" onclick="event.stopPropagation()">
+            <img id="lightboxImg" src="" alt="" class="w-full max-h-[80vh] object-contain rounded-xl"/>
+            <p id="lightboxCaption" class="text-center text-gray-400 text-sm mt-3"></p>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Related models -->
+    {% if related %}
+    <div class="border-t border-white/5 py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <h2 class="text-2xl font-black mb-10">
+                Alte modele <span class="text-cyan-400">{{ jetski.brand }}</span>
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {% for item in related %}
+                <a href="{% url 'catalog_detail' item.slug %}" class="group block">
+                    <div class="bg-gray-900 rounded-xl overflow-hidden border border-gray-800 card-hover group-hover:border-yellow-400/25">
+                        <div class="aspect-video bg-gradient-to-br from-gray-800 to-gray-900 relative overflow-hidden">
+                            {% if item.main_image %}
+                                <img src="{{ item.main_image.url }}" alt="{{ item.title }}"
+                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"/>
+                            {% else %}
+                                <div class="w-full h-full flex items-center justify-center">
+                                    <span class="text-4xl opacity-10">🚤</span>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="p-5">
+                            <h4 class="text-white font-bold group-hover:text-yellow-400 transition-colors mb-1">
+                                {{ item.title }}
+                            </h4>
+                            <p class="text-gray-600 text-sm">{{ item.year }} · {{ item.horsepower }} CP</p>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    function openLightbox(src, caption) {
+        document.getElementById('lightboxImg').src = src;
+        document.getElementById('lightboxCaption').textContent = caption || '';
+        const lb = document.getElementById('lightbox');
+        lb.classList.remove('hidden');
+        lb.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+        const lb = document.getElementById('lightbox');
+        lb.classList.add('hidden');
+        lb.classList.remove('flex');
+        document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeLightbox();
+    });
+</script>
+{% endblock %}

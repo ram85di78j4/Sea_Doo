@@ -1,0 +1,130 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Contact — Sea-Doo România{% endblock %}
+{% block meta_description %}Trimite-mi un mesaj despre colecție, comunitate sau jet-ski. Răspund rapid.{% endblock %}
+{% block og_title %}Contact — Sea-Doo România{% endblock %}
+
+{% block content %}
+<div class="pt-16">
+
+    <div class="bg-gradient-to-b from-gray-900 to-gray-950 py-20 border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <span class="text-yellow-400 text-xs font-semibold uppercase tracking-widest mb-4 block">Hai să vorbim</span>
+            <h1 class="text-4xl md:text-5xl font-black mb-3">Contact</h1>
+            <p class="text-gray-500 text-lg max-w-xl">
+                Ai o întrebare, o idee sau vrei pur și simplu să schimbi câteva cuvinte despre jet-ski? Scrie-mi.
+            </p>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+
+            <!-- Left: Info -->
+            <div>
+                <h2 class="text-2xl font-black text-white mb-6">Cum te pot ajuta</h2>
+                <div class="space-y-5 text-gray-400 mb-10">
+                    <div class="flex gap-4 items-start">
+                        <div class="w-10 h-10 bg-yellow-400/10 rounded-xl flex items-center justify-center text-xl flex-shrink-0">💬</div>
+                        <div>
+                            <h3 class="text-white font-semibold mb-1">Întrebări despre colecție</h3>
+                            <p class="text-sm text-gray-500">Detalii tehnice, povești, experiențe cu modelele din catalog.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 items-start">
+                        <div class="w-10 h-10 bg-cyan-400/10 rounded-xl flex items-center justify-center text-xl flex-shrink-0">🌊</div>
+                        <div>
+                            <h3 class="text-white font-semibold mb-1">Comunitate</h3>
+                            <p class="text-sm text-gray-500">Vrei să participi la construirea comunității de jet-ski din România.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 items-start">
+                        <div class="w-10 h-10 bg-blue-400/10 rounded-xl flex items-center justify-center text-xl flex-shrink-0">🤝</div>
+                        <div>
+                            <h3 class="text-white font-semibold mb-1">Colaborări</h3>
+                            <p class="text-sm text-gray-500">Propuneri de colaborare, parteneriate sau alte inițiative.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 items-start">
+                        <div class="w-10 h-10 bg-yellow-400/10 rounded-xl flex items-center justify-center text-xl flex-shrink-0">📋</div>
+                        <div>
+                            <h3 class="text-white font-semibold mb-1">Catalog și modele</h3>
+                            <p class="text-sm text-gray-500">Informații despre modelele din colecție sau sugestii de adăugat.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 items-start">
+                        <div class="w-10 h-10 bg-cyan-400/10 rounded-xl flex items-center justify-center text-xl flex-shrink-0">🏆</div>
+                        <div>
+                            <h3 class="text-white font-semibold mb-1">Evenimente și tururi</h3>
+                            <p class="text-sm text-gray-500">Organizezi un eveniment? Vrei să participi la turul următor? Scrie-ne.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3 text-gray-500 text-sm">
+                        <span class="text-yellow-400">📧</span>
+                        {% if CONTACT_EMAIL %}<a href="mailto:{{ CONTACT_EMAIL }}" class="hover:text-yellow-400 transition-colors">{{ CONTACT_EMAIL }}</a>{% else %}contact@seadoo.ro{% endif %}
+                    </div>
+                    <div class="flex items-center gap-3 text-gray-500 text-sm">
+                        <span class="text-cyan-400">📍</span> România
+                    </div>
+                    <div class="flex items-center gap-3 text-gray-500 text-sm">
+                        <span class="text-blue-400">⏱</span> Răspund în maxim 24 de ore
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Form -->
+            <div>
+                <div class="bg-gray-900 border border-gray-800 rounded-2xl p-8">
+                    <h3 class="text-white font-bold text-xl mb-6">Trimite un mesaj</h3>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="space-y-5">
+
+                            <div>
+                                <label class="block text-gray-400 text-sm font-medium mb-2">
+                                    {{ form.name.label }} *
+                                </label>
+                                {{ form.name }}
+                                {% if form.name.errors %}
+                                    <p class="text-red-400 text-xs mt-1.5">{{ form.name.errors.0 }}</p>
+                                {% endif %}
+                            </div>
+
+                            <div>
+                                <label class="block text-gray-400 text-sm font-medium mb-2">
+                                    {{ form.email.label }} *
+                                </label>
+                                {{ form.email }}
+                                {% if form.email.errors %}
+                                    <p class="text-red-400 text-xs mt-1.5">{{ form.email.errors.0 }}</p>
+                                {% endif %}
+                            </div>
+
+                            <div>
+                                <label class="block text-gray-400 text-sm font-medium mb-2">
+                                    {{ form.message.label }} *
+                                </label>
+                                {{ form.message }}
+                                {% if form.message.errors %}
+                                    <p class="text-red-400 text-xs mt-1.5">{{ form.message.errors.0 }}</p>
+                                {% endif %}
+                            </div>
+
+                            <button type="submit"
+                                    class="w-full bg-yellow-400 text-gray-950 font-bold py-4 rounded-xl hover:bg-yellow-300 transition-all hover:shadow-[0_0_24px_rgba(251,191,36,0.25)] text-base mt-2">
+                                Trimite mesajul
+                            </button>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}

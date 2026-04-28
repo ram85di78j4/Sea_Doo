@@ -1,0 +1,115 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Membri — {{ SITE_NAME }}{% endblock %}
+{% block meta_description %}Directorul membrilor comunității de jet-ski din România.{% endblock %}
+
+{% block content %}
+<div class="pt-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
+        <div>
+            <div class="inline-flex items-center gap-2 bg-cyan-400/10 border border-cyan-400/20 text-cyan-400 text-xs font-semibold px-4 py-1.5 rounded-full mb-4 uppercase tracking-widest">
+                <span class="w-1.5 h-1.5 bg-cyan-400 rounded-full"></span>
+                Comunitate
+            </div>
+            <h1 class="text-3xl md:text-4xl font-black text-white">Membri</h1>
+            <p class="text-gray-500 text-base mt-2">
+                {{ members|length }} membr{% if members|length == 1 %}u{% else %}i{% endif %} în directorul public
+            </p>
+        </div>
+        {% if user.is_authenticated %}
+        <a href="{% url 'profile_edit' %}"
+           class="flex-shrink-0 border border-gray-700 hover:border-yellow-400/40 text-gray-400 hover:text-yellow-400 text-sm font-semibold px-5 py-2.5 rounded-xl transition-all self-start">
+            Editează profilul meu
+        </a>
+        {% else %}
+        <a href="{% url 'register' %}"
+           class="flex-shrink-0 bg-yellow-400 text-gray-950 font-bold px-5 py-2.5 rounded-xl hover:bg-yellow-300 transition-all self-start text-sm">
+            Alătură-te comunității
+        </a>
+        {% endif %}
+    </div>
+
+    {% if members %}
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {% for profile in members %}
+        <a href="{% url 'member_public_profile' profile.user.username %}"
+           class="bg-gray-900 border border-gray-800 rounded-2xl p-6 hover:border-gray-600 transition-colors block group">
+
+            <div class="flex items-start gap-4">
+                <!-- Avatar -->
+                <div class="flex-shrink-0">
+                    {% if profile.avatar %}
+                    <img src="{{ profile.avatar.url }}" alt=""
+                         class="w-14 h-14 rounded-xl object-cover border border-gray-700 group-hover:border-yellow-400/30 transition-colors">
+                    {% else %}
+                    <div class="w-14 h-14 rounded-xl bg-yellow-400/10 border border-yellow-400/20 flex items-center justify-center group-hover:bg-yellow-400/15 transition-colors">
+                        <span class="text-yellow-400 font-black text-xl">
+                            {{ profile.user.first_name|first|upper }}{% if not profile.user.first_name %}{{ profile.user.email|first|upper }}{% endif %}
+                        </span>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Info -->
+                <div class="flex-1 min-w-0">
+                    <p class="text-white font-bold text-sm truncate group-hover:text-yellow-400 transition-colors">
+                        {{ profile.user.get_full_name|default:profile.user.email }}
+                    </p>
+                    {% if profile.city %}
+                    <p class="text-gray-600 text-xs mt-0.5 truncate">📍 {{ profile.city }}</p>
+                    {% endif %}
+                    <p class="text-gray-700 text-xs mt-1">
+                        Membru din {{ profile.created_at|date:"M Y" }}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Tags -->
+            <div class="flex flex-wrap gap-1.5 mt-4">
+                {% if profile.favorite_brand %}
+                <span class="bg-yellow-400/10 border border-yellow-400/20 text-yellow-400 text-xs px-2.5 py-0.5 rounded-full">
+                    {{ profile.get_favorite_brand_display }}
+                </span>
+                {% endif %}
+                {% if profile.owns_jetski %}
+                <span class="bg-cyan-400/10 border border-cyan-400/20 text-cyan-400 text-xs px-2.5 py-0.5 rounded-full">
+                    Proprietar
+                </span>
+                {% endif %}
+                {% with badges=profile.get_badges %}
+                {% for badge in badges %}
+                {% if badge.key == 'active' %}
+                <span class="bg-green-400/10 border border-green-400/20 text-green-400 text-xs px-2.5 py-0.5 rounded-full">
+                    Activ
+                </span>
+                {% endif %}
+                {% endfor %}
+                {% endwith %}
+            </div>
+
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="bg-gray-900 border border-gray-800 rounded-2xl p-16 text-center">
+        <div class="text-5xl mb-5">🌊</div>
+        <h3 class="text-white font-bold text-lg mb-2">Niciun profil public momentan</h3>
+        <p class="text-gray-500 text-sm mb-6">Fii primul care apare în directorul comunității.</p>
+        {% if not user.is_authenticated %}
+        <a href="{% url 'register' %}" class="bg-yellow-400 text-gray-950 font-bold px-6 py-3 rounded-xl hover:bg-yellow-300 transition-all">
+            Creează cont
+        </a>
+        {% else %}
+        <a href="{% url 'profile_edit' %}" class="bg-yellow-400 text-gray-950 font-bold px-6 py-3 rounded-xl hover:bg-yellow-300 transition-all">
+            Activează vizibilitatea profilului
+        </a>
+        {% endif %}
+    </div>
+    {% endif %}
+
+</div>
+</div>
+{% endblock %}

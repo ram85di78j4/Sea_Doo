@@ -1,0 +1,130 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Regulile comunității — Forum — {{ SITE_NAME }}{% endblock %}
+{% block meta_description %}Regulile forumului comunității de jet-ski din România.{% endblock %}
+
+{% block content %}
+<div class="pt-16">
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+
+    <!-- Breadcrumb -->
+    <nav class="flex items-center gap-2 text-xs text-gray-600 mb-8">
+        <a href="{% url 'forum_index' %}" class="hover:text-yellow-400 transition-colors">Forum</a>
+        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+        <span class="text-gray-400">Reguli comunitate</span>
+    </nav>
+
+    <!-- Header -->
+    <div class="mb-12">
+        <div class="inline-flex items-center gap-2 bg-yellow-400/10 border border-yellow-400/20 text-yellow-400 text-xs font-semibold px-4 py-1.5 rounded-full mb-4 uppercase tracking-widest">
+            <span class="w-1.5 h-1.5 bg-yellow-400 rounded-full"></span>
+            Comunitate
+        </div>
+        <h1 class="text-3xl md:text-4xl font-black text-white">Regulile comunității</h1>
+        <p class="text-gray-500 text-base mt-3 leading-relaxed">
+            Forumul este un spațiu dedicat pasionaților de jet-ski din România. Respectarea regulilor de mai jos
+            asigură o experiență plăcută pentru toți membrii.
+        </p>
+    </div>
+
+    <!-- Rules -->
+    <div class="space-y-4">
+
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 flex gap-5">
+            <div class="w-10 h-10 bg-yellow-400/10 border border-yellow-400/20 rounded-xl flex items-center justify-center text-yellow-400 font-black text-lg flex-shrink-0">
+                1
+            </div>
+            <div>
+                <h3 class="text-white font-bold text-base mb-1.5">Respect între membri</h3>
+                <p class="text-gray-500 text-sm leading-relaxed">
+                    Tratează toți membrii cu respect, indiferent de opinie sau nivel de experiență.
+                    Nu sunt tolerate insulte, atacuri personale sau limbaj agresiv.
+                </p>
+            </div>
+        </div>
+
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 flex gap-5">
+            <div class="w-10 h-10 bg-cyan-400/10 border border-cyan-400/20 rounded-xl flex items-center justify-center text-cyan-400 font-black text-lg flex-shrink-0">
+                2
+            </div>
+            <div>
+                <h3 class="text-white font-bold text-base mb-1.5">Fără spam sau reclame neautorizate</h3>
+                <p class="text-gray-500 text-sm leading-relaxed">
+                    Nu posta mesaje repetitive, linkuri de afiliere sau reclame comerciale fără
+                    acordul administratorilor. Conținutul trebuie să fie relevant pentru subiect.
+                </p>
+            </div>
+        </div>
+
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 flex gap-5">
+            <div class="w-10 h-10 bg-green-400/10 border border-green-400/20 rounded-xl flex items-center justify-center text-green-400 font-black text-lg flex-shrink-0">
+                3
+            </div>
+            <div>
+                <h3 class="text-white font-bold text-base mb-1.5">Fără date personale publice</h3>
+                <p class="text-gray-500 text-sm leading-relaxed">
+                    Nu posta numere de telefon, adrese, date financiare sau alte informații personale
+                    ale tale sau ale altor persoane. Protejează-ți intimitatea și pe a celorlalți.
+                </p>
+            </div>
+        </div>
+
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 flex gap-5">
+            <div class="w-10 h-10 bg-orange-400/10 border border-orange-400/20 rounded-xl flex items-center justify-center text-orange-400 font-black text-lg flex-shrink-0">
+                4
+            </div>
+            <div>
+                <h3 class="text-white font-bold text-base mb-1.5">Fără vânzări înșelătoare</h3>
+                <p class="text-gray-500 text-sm leading-relaxed">
+                    Dacă postezi despre vânzări sau schimburi, informațiile trebuie să fie reale și complete.
+                    Nu sunt tolerate descrierile false, prețurile incorecte sau intenția de a înșela.
+                </p>
+            </div>
+        </div>
+
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 flex gap-5">
+            <div class="w-10 h-10 bg-blue-400/10 border border-blue-400/20 rounded-xl flex items-center justify-center text-blue-400 font-black text-lg flex-shrink-0">
+                5
+            </div>
+            <div>
+                <h3 class="text-white font-bold text-base mb-1.5">Discuții civilizate și constructive</h3>
+                <p class="text-gray-500 text-sm leading-relaxed">
+                    Exprimă-ți părerile respectuos, chiar dacă ești în dezacord. Scopul este schimbul de
+                    experiențe și ajutorul reciproc, nu câștigarea unor argumente.
+                </p>
+            </div>
+        </div>
+
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 flex gap-5">
+            <div class="w-10 h-10 bg-red-400/10 border border-red-400/20 rounded-xl flex items-center justify-center text-red-400 font-black text-lg flex-shrink-0">
+                6
+            </div>
+            <div>
+                <h3 class="text-white font-bold text-base mb-1.5">Moderarea conținutului</h3>
+                <p class="text-gray-500 text-sm leading-relaxed">
+                    Administratorii pot edita, bloca sau șterge orice conținut care încalcă regulile,
+                    fără notificare prealabilă. Utilizatorii care înregistrează abateri repetate
+                    pot fi restricționați de pe forum.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Report CTA -->
+    <div class="mt-10 bg-gray-900 border border-gray-800 rounded-2xl p-6 flex flex-col sm:flex-row sm:items-center gap-4">
+        <div class="flex-1">
+            <p class="text-white font-semibold text-sm">Ai văzut ceva care încalcă regulile?</p>
+            <p class="text-gray-500 text-xs mt-0.5">Folosește butonul „Raportează" de lângă orice subiect sau răspuns.</p>
+        </div>
+        <a href="{% url 'forum_index' %}"
+           class="flex-shrink-0 border border-gray-700 text-gray-300 text-sm font-semibold px-5 py-2.5 rounded-xl hover:border-yellow-400/40 hover:text-yellow-400 transition-all">
+            Înapoi la forum
+        </a>
+    </div>
+
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,167 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Catalog Jet-Ski — Sea-Doo România{% endblock %}
+{% block meta_description %}Catalog complet de jet-ski-uri din colecția personală. Filtrează după marcă, an și status.{% endblock %}
+
+{% block content %}
+<div class="pt-16">
+
+    <!-- Page Header -->
+    <div class="bg-gradient-to-b from-gray-900 to-gray-950 py-20 border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+                <div>
+                    <span class="text-yellow-400 text-xs font-semibold uppercase tracking-widest mb-4 block">Colecție completă</span>
+                    <h1 class="text-4xl md:text-5xl font-black mb-3">Catalog Jet-Ski</h1>
+                    <p class="text-gray-500 text-lg max-w-2xl">
+                        Fiecare vehicul din această colecție are propria poveste. Explorează specificațiile, fotografiile și istoria lor.
+                    </p>
+                </div>
+                <a href="{% url 'home' %}#contact"
+                   class="flex-shrink-0 inline-flex items-center gap-2 border border-yellow-400/40 text-yellow-400 font-semibold px-6 py-3 rounded-full hover:bg-yellow-400 hover:text-gray-950 transition-all text-sm">
+                    Contactează-mă
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="bg-gray-900/80 backdrop-blur border-b border-white/5 sticky top-16 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <form method="GET" class="flex flex-wrap gap-3 items-center">
+
+                <!-- Search -->
+                <div class="relative w-full sm:flex-1 sm:min-w-[200px] sm:max-w-xs">
+                    <input type="text" name="search" value="{{ selected_search }}"
+                           placeholder="Caută titlu, marcă, motor..."
+                           class="w-full bg-gray-800 border border-gray-700 text-white text-sm rounded-lg pl-9 pr-3 py-2 focus:outline-none focus:border-yellow-400 placeholder-gray-600">
+                    <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0"/>
+                    </svg>
+                </div>
+
+                <span class="text-gray-700 hidden sm:block">|</span>
+                <span class="text-gray-600 text-xs font-semibold uppercase tracking-wider">Filtrează:</span>
+
+                <select name="brand" onchange="this.form.submit()"
+                        class="w-full sm:w-auto bg-gray-800 border border-gray-700 text-white text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-yellow-400 cursor-pointer appearance-none pr-8">
+                    <option value="">Toate mărcile</option>
+                    {% for b in brands %}
+                    <option value="{{ b }}" {% if b == selected_brand %}selected{% endif %}>{{ b }}</option>
+                    {% endfor %}
+                </select>
+
+                <select name="year" onchange="this.form.submit()"
+                        class="w-full sm:w-auto bg-gray-800 border border-gray-700 text-white text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-yellow-400 cursor-pointer appearance-none pr-8">
+                    <option value="">Toți anii</option>
+                    {% for y in years %}
+                    <option value="{{ y }}" {% if y|stringformat:"s" == selected_year %}selected{% endif %}>{{ y }}</option>
+                    {% endfor %}
+                </select>
+
+                <select name="status" onchange="this.form.submit()"
+                        class="w-full sm:w-auto bg-gray-800 border border-gray-700 text-white text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-yellow-400 cursor-pointer appearance-none pr-8">
+                    <option value="">Toate statusurile</option>
+                    {% for value, label in status_choices %}
+                    <option value="{{ value }}" {% if value == selected_status %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+
+                {% if selected_search or selected_brand or selected_year or selected_status %}
+                <a href="{% url 'catalog_list' %}"
+                   class="flex items-center gap-1 text-gray-500 hover:text-yellow-400 text-sm transition-colors px-2">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                    Resetează
+                </a>
+                {% endif %}
+
+                <span class="ml-auto text-gray-500 text-sm">
+                    {% if jetskis %}
+                        Am găsit <span class="text-yellow-400 font-bold">{{ jetskis|length }}</span> model{{ jetskis|length|pluralize:"e" }} în colecție.
+                    {% else %}
+                        Niciun model găsit.
+                    {% endif %}
+                </span>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- Grid -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+
+        {% if jetskis %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for jetski in jetskis %}
+            <a href="{% url 'catalog_detail' jetski.slug %}" class="group block">
+                <div class="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 card-hover group-hover:border-yellow-400/25 h-full flex flex-col">
+
+                    <!-- Image -->
+                    <div class="aspect-video bg-gradient-to-br from-gray-800 to-gray-900 relative overflow-hidden">
+                        {% if jetski.main_image %}
+                            <img src="{{ jetski.main_image.url }}" alt="{{ jetski.title }}"
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"/>
+                        {% else %}
+                            <div class="w-full h-full flex items-center justify-center">
+                                <span class="text-6xl opacity-10">🚤</span>
+                            </div>
+                        {% endif %}
+                        <div class="absolute top-3 right-3">
+                            <span class="status-badge-{{ jetski.status }} text-xs font-bold px-3 py-1 rounded-full">
+                                {{ jetski.get_status_display }}
+                            </span>
+                        </div>
+                        <div class="absolute top-3 left-3 bg-black/60 backdrop-blur text-white text-xs font-bold px-2.5 py-1 rounded-full">
+                            {{ jetski.year }}
+                        </div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="p-6 flex flex-col flex-1">
+                        <div class="text-cyan-400 text-xs font-semibold uppercase tracking-wider mb-2">
+                            {{ jetski.brand }} {{ jetski.model }}
+                        </div>
+                        <h3 class="text-white font-bold text-xl mb-3 group-hover:text-yellow-400 transition-colors leading-snug">
+                            {{ jetski.title }}
+                        </h3>
+                        <p class="text-gray-500 text-sm leading-relaxed mb-5 flex-1">
+                            {{ jetski.short_description|truncatewords:18 }}
+                        </p>
+                        <div class="flex items-center justify-between pt-4 border-t border-gray-800">
+                            <div class="flex items-center gap-3 text-sm">
+                                <span class="text-yellow-400 font-bold">⚡ {{ jetski.horsepower }} CP</span>
+                                <span class="text-gray-600">·</span>
+                                <span class="text-gray-500 text-xs">{{ jetski.engine }}</span>
+                            </div>
+                            <span class="text-yellow-400 text-sm font-semibold group-hover:translate-x-1.5 transition-transform inline-block">
+                                →
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+
+        {% else %}
+        <!-- Empty state -->
+        <div class="text-center py-28">
+            <div class="text-7xl mb-6 opacity-30">🌊</div>
+            <h3 class="text-2xl font-bold text-gray-500 mb-3">Niciun rezultat găsit</h3>
+            <p class="text-gray-600 mb-8">Încearcă să modifici filtrele sau resetează-le pentru a vedea tot catalogul.</p>
+            <a href="{% url 'catalog_list' %}"
+               class="inline-flex items-center gap-2 bg-yellow-400 text-gray-950 font-bold px-7 py-3 rounded-full hover:bg-yellow-300 transition-all">
+                Resetează filtrele
+            </a>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

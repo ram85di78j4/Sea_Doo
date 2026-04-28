@@ -1,0 +1,56 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Termeni și Condiții — Sea-Doo România{% endblock %}
+{% block meta_description %}Termenii și condițiile de utilizare ale platformei Sea-Doo România.{% endblock %}
+
+{% block content %}
+<div class="pt-16">
+
+    <div class="bg-gradient-to-b from-gray-900 to-gray-950 py-16 border-b border-white/5">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <span class="text-yellow-400 text-xs font-semibold uppercase tracking-widest mb-4 block">Legal</span>
+            <h1 class="text-3xl md:text-4xl font-black mb-2">Termeni și Condiții</h1>
+            <p class="text-gray-600 text-sm">Ultima actualizare: Ianuarie 2025</p>
+        </div>
+    </div>
+
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="prose prose-invert max-w-none space-y-8 text-gray-400 leading-relaxed">
+
+            <section>
+                <h2 class="text-white font-bold text-xl mb-3">1. Acceptarea termenilor</h2>
+                <p>Prin accesarea și utilizarea acestui website, ești de acord cu termenii și condițiile prezentate mai jos. Dacă nu ești de acord cu acești termeni, te rugăm să nu utilizezi website-ul.</p>
+            </section>
+
+            <section>
+                <h2 class="text-white font-bold text-xl mb-3">2. Descrierea serviciului</h2>
+                <p>SeaDoo.ro este un website personal care prezintă o colecție privată de jet-ski-uri și furnizează informații pentru pasionații de jet-ski din România. Conținutul este furnizat exclusiv în scop informativ și de divertisment.</p>
+            </section>
+
+            <section>
+                <h2 class="text-white font-bold text-xl mb-3">3. Proprietate intelectuală</h2>
+                <p>Tot conținutul acestui website — texte, fotografii, specificații tehnice, design — este proprietatea autorului și este protejat de legile privind drepturile de autor. Reproducerea fără permisiune scrisă este interzisă.</p>
+            </section>
+
+            <section>
+                <h2 class="text-white font-bold text-xl mb-3">4. Limitarea răspunderii</h2>
+                <p>Informațiile prezentate pe acest website au caracter orientativ. Autorul nu garantează acuratețea completă a tuturor specificațiilor tehnice și nu poate fi ținut responsabil pentru decizii luate pe baza informațiilor de pe website.</p>
+            </section>
+
+            <section>
+                <h2 class="text-white font-bold text-xl mb-3">5. Modificarea termenilor</h2>
+                <p>Ne rezervăm dreptul de a modifica acești termeni în orice moment. Continuarea utilizării website-ului după publicarea modificărilor constituie acceptarea noilor termeni.</p>
+            </section>
+
+            <section>
+                <h2 class="text-white font-bold text-xl mb-3">6. Contact</h2>
+                <p>Pentru orice întrebare legată de acești termeni, ne poți contacta la
+                    <a href="{% url 'contact_page' %}" class="text-yellow-400 hover:text-yellow-300">pagina de contact</a>.
+                </p>
+            </section>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}

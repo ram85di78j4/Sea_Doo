@@ -1,0 +1,211 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Forum — {{ SITE_NAME }}{% endblock %}
+{% block meta_description %}Forumul comunității de jet-ski din România. Discuții, sfaturi și experiențe reale.{% endblock %}
+
+{% block content %}
+<div class="pt-16">
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+
+    {% if messages %}
+    {% for msg in messages %}
+    <div class="{% if msg.tags == 'error' %}bg-red-900/40 border-red-600/40 text-red-300{% else %}bg-green-900/40 border-green-600/40 text-green-300{% endif %} border rounded-xl px-5 py-3 mb-6 text-sm">
+        {{ msg }}
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-10">
+        <div>
+            <div class="inline-flex items-center gap-2 bg-yellow-400/10 border border-yellow-400/20 text-yellow-400 text-xs font-semibold px-4 py-1.5 rounded-full mb-4 uppercase tracking-widest">
+                <span class="w-1.5 h-1.5 bg-yellow-400 rounded-full"></span>
+                Forum comunitate
+            </div>
+            <h1 class="text-3xl md:text-4xl font-black text-white">Forum</h1>
+            <p class="text-gray-500 text-sm mt-2">Discuții, sfaturi și experiențe din comunitatea de jet-ski.</p>
+            <a href="{% url 'forum_rules' %}" class="inline-flex items-center gap-1.5 text-gray-600 hover:text-yellow-400 text-xs transition-colors mt-2">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                Regulile comunității
+            </a>
+        </div>
+        {% if user.is_authenticated %}
+        <a href="{% url 'topic_new' %}"
+           class="flex-shrink-0 bg-yellow-400 text-gray-950 font-bold px-6 py-3 rounded-xl hover:bg-yellow-300 transition-all hover:shadow-[0_0_24px_rgba(251,191,36,0.3)] flex items-center gap-2 self-start">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            Subiect nou
+        </a>
+        {% else %}
+        <a href="{% url 'register' %}"
+           class="flex-shrink-0 bg-yellow-400 text-gray-950 font-bold px-5 py-2.5 rounded-xl hover:bg-yellow-300 transition-all self-start text-sm">
+            Creează cont pentru a posta
+        </a>
+        {% endif %}
+    </div>
+
+    <!-- Categories -->
+    {% if categories %}
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5 mb-10">
+        {% for cat in categories %}
+        <a href="{% url 'forum_category' cat.slug %}"
+           class="bg-gray-900 border {% if category_slug == cat.slug %}border-cyan-400/40{% else %}border-gray-800{% endif %} rounded-xl p-3.5 flex items-center gap-3 hover:border-cyan-400/30 transition-all group">
+            <span class="text-lg flex-shrink-0">{{ cat.icon }}</span>
+            <div class="min-w-0">
+                <p class="text-white font-semibold text-xs group-hover:text-cyan-400 transition-colors truncate">{{ cat.name }}</p>
+                <p class="text-gray-700 text-xs">{{ cat.real_topics.count }} sub.</p>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Search + Filters -->
+    <div class="bg-gray-900 border border-gray-800 rounded-2xl p-5 mb-6">
+        <form method="GET" action="{% url 'forum_index' %}" class="flex flex-col sm:flex-row gap-3">
+            <div class="flex-1 relative">
+                <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+                <input type="text" name="q" value="{{ q }}" placeholder="Caută subiecte, autori, categorii..."
+                       class="w-full bg-gray-800 border border-gray-700 text-white text-sm rounded-xl pl-10 pr-4 py-2.5 focus:outline-none focus:border-yellow-400 transition-colors placeholder-gray-600">
+            </div>
+            <select name="sort"
+                    class="bg-gray-800 border border-gray-700 text-gray-300 text-sm rounded-xl px-4 py-2.5 focus:outline-none focus:border-yellow-400 transition-colors appearance-none cursor-pointer">
+                <option value="latest" {% if sort == 'latest' %}selected{% endif %}>Cele mai recente</option>
+                <option value="views" {% if sort == 'views' %}selected{% endif %}>Cele mai vizualizate</option>
+                <option value="replies" {% if sort == 'replies' %}selected{% endif %}>Cele mai comentate</option>
+            </select>
+            <select name="categorie"
+                    class="bg-gray-800 border border-gray-700 text-gray-300 text-sm rounded-xl px-4 py-2.5 focus:outline-none focus:border-yellow-400 transition-colors appearance-none cursor-pointer">
+                <option value="">Toate categoriile</option>
+                {% for cat in categories %}
+                <option value="{{ cat.slug }}" {% if category_slug == cat.slug %}selected{% endif %}>{{ cat.name }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit"
+                    class="bg-yellow-400 text-gray-950 font-bold px-5 py-2.5 rounded-xl hover:bg-yellow-300 transition-all text-sm flex-shrink-0">
+                Caută
+            </button>
+            {% if q or category_slug or pinned_only or sort != 'latest' %}
+            <a href="{% url 'forum_index' %}" class="flex items-center text-gray-600 hover:text-gray-300 text-sm px-2 transition-colors flex-shrink-0">
+                Resetează
+            </a>
+            {% endif %}
+        </form>
+
+        <!-- Pinned filter toggle -->
+        <div class="flex items-center gap-4 mt-3 pt-3 border-t border-gray-800">
+            <a href="?{% if q %}q={{ q }}&{% endif %}sort={{ sort }}{% if category_slug %}&categorie={{ category_slug }}{% endif %}{% if not pinned_only %}&fixate=1{% endif %}"
+               class="flex items-center gap-1.5 text-xs {% if pinned_only %}text-yellow-400{% else %}text-gray-600 hover:text-gray-400{% endif %} transition-colors">
+                <span class="w-3.5 h-3.5 inline-flex items-center justify-center">📌</span>
+                Fixate
+            </a>
+            {% if q %}
+            <span class="text-gray-700 text-xs">Rezultate pentru: <span class="text-gray-400 font-medium">"{{ q }}"</span></span>
+            {% endif %}
+            {% if selected_category %}
+            <span class="text-gray-700 text-xs">Categorie: <span class="text-cyan-400 font-medium">{{ selected_category.name }}</span></span>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Topics list -->
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="text-gray-400 font-semibold text-xs uppercase tracking-widest">
+            {% if q %}Rezultate căutare{% elif pinned_only %}Subiecte fixate{% else %}Subiecte{% endif %}
+        </h2>
+        <span class="text-gray-600 text-xs">{{ page_obj.paginator.count }} total</span>
+    </div>
+
+    {% if page_obj.object_list %}
+    <div class="space-y-2 mb-8">
+        {% for topic in page_obj %}
+        <a href="{% url 'topic_detail' topic.slug %}"
+           class="bg-gray-900 border {% if topic.is_pinned %}border-yellow-400/20{% else %}border-gray-800{% endif %} rounded-xl px-5 py-4 flex items-center gap-4 hover:border-gray-600 transition-colors block group">
+
+            <div class="flex-shrink-0 w-16 text-center">
+                {% if topic.is_pinned %}
+                <span class="text-yellow-400 text-xs font-bold uppercase tracking-wider bg-yellow-400/10 px-2 py-0.5 rounded">Fixat</span>
+                {% elif topic.is_locked %}
+                <span class="text-gray-500 text-xs font-bold uppercase tracking-wider bg-gray-800 px-2 py-0.5 rounded">Blocat</span>
+                {% else %}
+                <div class="w-2 h-2 rounded-full bg-cyan-400/50 mx-auto"></div>
+                {% endif %}
+            </div>
+
+            <div class="flex-1 min-w-0">
+                <p class="text-white font-semibold text-sm truncate group-hover:text-yellow-400 transition-colors">{{ topic.title }}</p>
+                <p class="text-gray-600 text-xs mt-0.5">
+                    {{ topic.category.icon }} {{ topic.category.name }} · {{ topic.author.get_full_name|default:topic.author.email }} · {{ topic.created_at|date:"d M Y" }}
+                </p>
+            </div>
+
+            <div class="flex items-center gap-4 text-xs text-gray-600 flex-shrink-0">
+                <div class="flex items-center gap-1" title="Răspunsuri">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                    </svg>
+                    {{ topic.replies_count }}
+                </div>
+                <div class="flex items-center gap-1 hidden sm:flex" title="Vizualizări">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                    </svg>
+                    {{ topic.views_count }}
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+    <div class="flex items-center justify-center gap-2">
+        {% if page_obj.has_previous %}
+        <a href="?{% if q %}q={{ q }}&{% endif %}sort={{ sort }}{% if category_slug %}&categorie={{ category_slug }}{% endif %}{% if pinned_only %}&fixate=1{% endif %}&pagina={{ page_obj.previous_page_number }}"
+           class="bg-gray-800 border border-gray-700 text-gray-300 hover:text-white hover:border-gray-500 px-4 py-2 rounded-lg text-sm transition-colors">
+            ← Anterior
+        </a>
+        {% endif %}
+        <span class="text-gray-600 text-sm px-3">Pagina {{ page_obj.number }} din {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+        <a href="?{% if q %}q={{ q }}&{% endif %}sort={{ sort }}{% if category_slug %}&categorie={{ category_slug }}{% endif %}{% if pinned_only %}&fixate=1{% endif %}&pagina={{ page_obj.next_page_number }}"
+           class="bg-gray-800 border border-gray-700 text-gray-300 hover:text-white hover:border-gray-500 px-4 py-2 rounded-lg text-sm transition-colors">
+            Următor →
+        </a>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    {% else %}
+    <div class="bg-gray-900 border border-gray-800 rounded-2xl p-16 text-center">
+        <div class="text-5xl mb-5">💬</div>
+        {% if q %}
+        <h3 class="text-white font-bold text-lg mb-2">Niciun rezultat pentru "{{ q }}"</h3>
+        <p class="text-gray-500 text-sm mb-4">Încearcă un alt termen de căutare.</p>
+        <a href="{% url 'forum_index' %}" class="text-yellow-400 text-sm hover:text-yellow-300 transition-colors">← Înapoi la forum</a>
+        {% else %}
+        <h3 class="text-white font-bold text-lg mb-2">Nu există subiecte încă</h3>
+        <p class="text-gray-500 text-sm mb-6">Fii primul care deschide o discuție în comunitate!</p>
+        {% if user.is_authenticated %}
+        <a href="{% url 'topic_new' %}" class="inline-flex bg-yellow-400 text-gray-950 font-bold px-6 py-3 rounded-xl hover:bg-yellow-300 transition-all">
+            Creează primul subiect
+        </a>
+        {% else %}
+        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+            <a href="{% url 'register' %}" class="bg-yellow-400 text-gray-950 font-bold px-6 py-3 rounded-xl hover:bg-yellow-300 transition-all">Creează cont</a>
+            <a href="{% url 'login' %}" class="border border-gray-700 text-gray-300 font-semibold px-6 py-3 rounded-xl hover:border-yellow-400/40 transition-all">Autentifică-te</a>
+        </div>
+        {% endif %}
+        {% endif %}
+    </div>
+    {% endif %}
+
+</div>
+</div>
+{% endblock %}

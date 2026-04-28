@@ -1,0 +1,144 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}{{ profile.user.get_full_name|default:profile.user.email }} — Membri — {{ SITE_NAME }}{% endblock %}
+{% block meta_description %}Profilul public al lui {{ profile.user.get_full_name|default:profile.user.email }} din comunitatea de jet-ski.{% endblock %}
+
+{% block content %}
+<div class="pt-16">
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+
+    <!-- Breadcrumb -->
+    <nav class="flex items-center gap-2 text-xs text-gray-600 mb-8">
+        <a href="{% url 'member_directory' %}" class="hover:text-yellow-400 transition-colors">Membri</a>
+        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+        <span class="text-gray-400 truncate max-w-xs">{{ profile.user.get_full_name|default:profile.user.email }}</span>
+    </nav>
+
+    <!-- Profile header -->
+    <div class="bg-gray-900 border border-gray-800 rounded-2xl p-8 mb-6">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+
+            <!-- Avatar -->
+            <div class="flex-shrink-0">
+                {% if profile.avatar %}
+                <img src="{{ profile.avatar.url }}" alt="Avatar"
+                     class="w-20 h-20 rounded-2xl object-cover border-2 border-yellow-400/30">
+                {% else %}
+                <div class="w-20 h-20 bg-yellow-400/15 border border-yellow-400/25 rounded-2xl flex items-center justify-center">
+                    <span class="text-yellow-400 font-black text-3xl">
+                        {{ profile.user.first_name|first|upper }}{% if not profile.user.first_name %}{{ profile.user.email|first|upper }}{% endif %}
+                    </span>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Info -->
+            <div class="flex-1 min-w-0">
+                <h1 class="text-2xl font-black text-white mb-1">
+                    {{ profile.user.get_full_name|default:profile.user.email }}
+                </h1>
+                <p class="text-gray-600 text-sm mb-3">Membru din {{ profile.created_at|date:"d M Y" }}</p>
+                <div class="flex flex-wrap gap-2">
+                    {% if profile.city %}
+                    <span class="bg-gray-800 border border-gray-700 text-gray-400 text-xs px-3 py-1 rounded-full">
+                        📍 {{ profile.city }}
+                    </span>
+                    {% endif %}
+                    {% if profile.favorite_brand %}
+                    <span class="bg-yellow-400/10 border border-yellow-400/20 text-yellow-400 text-xs px-3 py-1 rounded-full">
+                        {{ profile.get_favorite_brand_display }}
+                    </span>
+                    {% endif %}
+                    {% if profile.owns_jetski %}
+                    <span class="bg-cyan-400/10 border border-cyan-400/20 text-cyan-400 text-xs px-3 py-1 rounded-full">
+                        ✓ Proprietar jet-ski
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Badges -->
+        {% if badges %}
+        <div class="flex flex-wrap gap-2 mt-6 pt-5 border-t border-gray-800">
+            {% for badge in badges %}
+            {% if badge.color == 'cyan' %}
+            <span class="bg-cyan-400/10 border border-cyan-400/20 text-cyan-400 text-xs font-semibold px-3 py-1 rounded-full">{{ badge.label }}</span>
+            {% elif badge.color == 'yellow' %}
+            <span class="bg-yellow-400/10 border border-yellow-400/20 text-yellow-400 text-xs font-semibold px-3 py-1 rounded-full">{{ badge.label }}</span>
+            {% elif badge.color == 'green' %}
+            <span class="bg-green-400/10 border border-green-400/20 text-green-400 text-xs font-semibold px-3 py-1 rounded-full">{{ badge.label }}</span>
+            {% elif badge.color == 'orange' %}
+            <span class="bg-orange-400/10 border border-orange-400/20 text-orange-400 text-xs font-semibold px-3 py-1 rounded-full">{{ badge.label }}</span>
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Bio -->
+    {% if profile.bio %}
+    <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 mb-6">
+        <h2 class="text-gray-500 text-xs font-semibold uppercase tracking-widest mb-3">Despre</h2>
+        <p class="text-gray-300 text-sm leading-relaxed">{{ profile.bio }}</p>
+    </div>
+    {% endif %}
+
+    <!-- Forum topics -->
+    {% if topics %}
+    <div class="mb-6">
+        <h2 class="text-gray-500 text-xs font-semibold uppercase tracking-widest mb-4">Subiecte recente</h2>
+        <div class="space-y-2">
+            {% for topic in topics %}
+            <a href="{% url 'topic_detail' topic.slug %}"
+               class="bg-gray-900 border border-gray-800 rounded-xl px-5 py-4 flex items-center gap-4 hover:border-gray-600 transition-colors block">
+                <div class="flex-1 min-w-0">
+                    <p class="text-white text-sm font-semibold truncate">{{ topic.title }}</p>
+                    <p class="text-gray-600 text-xs mt-0.5">{{ topic.category.icon }} {{ topic.category.name }} · {{ topic.created_at|date:"d M Y" }}</p>
+                </div>
+                <div class="flex items-center gap-1 text-gray-600 text-xs flex-shrink-0">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                    </svg>
+                    {{ topic.replies_count }}
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Forum replies -->
+    {% if replies %}
+    <div class="mb-6">
+        <h2 class="text-gray-500 text-xs font-semibold uppercase tracking-widest mb-4">Răspunsuri recente</h2>
+        <div class="space-y-2">
+            {% for reply in replies %}
+            <a href="{% url 'topic_detail' reply.topic.slug %}#reply-{{ reply.pk }}"
+               class="bg-gray-900 border border-gray-800 rounded-xl px-5 py-4 hover:border-gray-600 transition-colors block">
+                <p class="text-gray-400 text-xs mb-1">La: <span class="text-gray-300 font-medium">{{ reply.topic.title }}</span></p>
+                <p class="text-gray-500 text-sm truncate">{{ reply.content|truncatechars:120 }}</p>
+                <p class="text-gray-700 text-xs mt-1.5">{{ reply.created_at|date:"d M Y, H:i" }}</p>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% if not topics and not replies %}
+    <div class="bg-gray-900 border border-gray-800 rounded-2xl p-10 text-center">
+        <p class="text-gray-600 text-sm">Nicio activitate în forum încă.</p>
+    </div>
+    {% endif %}
+
+    <div class="mt-8 text-center">
+        <a href="{% url 'member_directory' %}" class="text-gray-600 hover:text-yellow-400 text-sm transition-colors">
+            ← Înapoi la lista membrilor
+        </a>
+    </div>
+
+</div>
+</div>
+{% endblock %}

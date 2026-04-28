@@ -1,0 +1,66 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Autentificare — {{ SITE_NAME }}{% endblock %}
+{% block meta_description %}Autentifică-te în contul tău din comunitatea de jet-ski.{% endblock %}
+
+{% block content %}
+<div class="pt-16 min-h-screen flex items-center justify-center py-16 px-4">
+    <div class="w-full max-w-md">
+
+        <div class="text-center mb-10">
+            <div class="w-14 h-14 bg-yellow-400 rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-[0_0_24px_rgba(251,191,36,0.3)]">
+                <svg class="w-7 h-7 text-gray-950" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 20 14">
+                    <path d="M1 7 Q5 2 10 7 Q15 12 19 7"/>
+                    <path d="M4 11 Q7 8 10 10 Q13 12 16 10" stroke-width="1.5" opacity="0.5"/>
+                </svg>
+            </div>
+            <h1 class="text-3xl font-black text-white mb-2">Bine ai revenit</h1>
+            <p class="text-gray-500 text-sm">Autentifică-te pentru a accesa profilul și comunitatea.</p>
+        </div>
+
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-8">
+            <form method="POST" novalidate>
+                {% csrf_token %}
+                <div class="space-y-5">
+
+                    <div>
+                        <label class="block text-gray-400 text-sm font-medium mb-2">{{ form.username.label }}</label>
+                        {{ form.username }}
+                        {% if form.username.errors %}
+                        <p class="text-red-400 text-xs mt-1.5">{{ form.username.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-400 text-sm font-medium mb-2">{{ form.password.label }}</label>
+                        {{ form.password }}
+                        {% if form.password.errors %}
+                        <p class="text-red-400 text-xs mt-1.5">{{ form.password.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    {% if form.non_field_errors %}
+                    <div class="bg-red-900/30 border border-red-600/40 rounded-xl p-3">
+                        {% for error in form.non_field_errors %}
+                        <p class="text-red-400 text-sm">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <button type="submit"
+                            class="w-full bg-yellow-400 text-gray-950 font-bold py-4 rounded-xl hover:bg-yellow-300 transition-all hover:shadow-[0_0_28px_rgba(251,191,36,0.3)] text-base mt-2">
+                        Autentifică-te
+                    </button>
+
+                </div>
+            </form>
+        </div>
+
+        <p class="text-center text-gray-600 text-sm mt-6">
+            Nu ai cont?
+            <a href="{% url 'register' %}" class="text-cyan-400 hover:text-cyan-300 font-medium transition-colors">Creează-ți contul gratuit</a>
+        </p>
+
+    </div>
+</div>
+{% endblock %}

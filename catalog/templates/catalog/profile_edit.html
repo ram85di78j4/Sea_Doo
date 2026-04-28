@@ -1,0 +1,141 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Editează profilul — {{ SITE_NAME }}{% endblock %}
+{% block meta_description %}Actualizează profilul tău din comunitatea de jet-ski.{% endblock %}
+
+{% block content %}
+<div class="pt-16">
+<div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+
+    <div class="flex items-center gap-4 mb-10">
+        <a href="{% url 'profile' %}"
+           class="w-9 h-9 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-xl flex items-center justify-center transition-colors flex-shrink-0">
+            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+        </a>
+        <div>
+            <h1 class="text-2xl font-black text-white">Editează profilul</h1>
+            <p class="text-gray-500 text-sm">Actualizează informațiile tale de profil.</p>
+        </div>
+    </div>
+
+    <div class="bg-gray-900 border border-gray-800 rounded-2xl p-8">
+        <form method="POST" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+            <div class="space-y-6">
+
+                <!-- Avatar upload -->
+                <div>
+                    <label class="block text-gray-400 text-sm font-medium mb-3">Avatar</label>
+                    <div class="flex items-center gap-5">
+                        <div class="relative flex-shrink-0">
+                            {% if profile.avatar %}
+                            <img src="{{ profile.avatar.url }}" alt="Avatar"
+                                 id="avatar-preview"
+                                 class="w-16 h-16 rounded-2xl object-cover border-2 border-gray-700">
+                            {% else %}
+                            <div class="w-16 h-16 bg-yellow-400/15 border-2 border-dashed border-gray-700 rounded-2xl flex items-center justify-center" id="avatar-placeholder">
+                                <span class="text-yellow-400 font-black text-xl">
+                                    {{ profile.user.first_name|first|upper }}{% if not profile.user.first_name %}{{ profile.user.email|first|upper }}{% endif %}
+                                </span>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <label for="avatar-upload"
+                                   class="cursor-pointer bg-gray-800 hover:bg-gray-700 border border-gray-700 hover:border-yellow-400/40 text-gray-300 hover:text-yellow-400 text-sm font-medium px-4 py-2 rounded-lg transition-all inline-block">
+                                Alege imagine
+                            </label>
+                            {{ form.avatar }}
+                            <p class="text-gray-600 text-xs mt-1.5">JPG, PNG — max 2MB</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-t border-gray-800 pt-6">
+                    <div>
+                        <label class="block text-gray-400 text-sm font-medium mb-2">{{ form.first_name.label }}</label>
+                        {{ form.first_name }}
+                        {% if form.first_name.errors %}
+                        <p class="text-red-400 text-xs mt-1.5">{{ form.first_name.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div>
+                        <label class="block text-gray-400 text-sm font-medium mb-2">{{ form.city.label }}</label>
+                        {{ form.city }}
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 text-sm font-medium mb-2">{{ form.favorite_brand.label }}</label>
+                        {{ form.favorite_brand }}
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3 bg-gray-800/50 border border-gray-700 rounded-xl px-4 py-3">
+                    {{ form.owns_jetski }}
+                    <label class="text-gray-300 text-sm cursor-pointer select-none">{{ form.owns_jetski.label }}</label>
+                </div>
+
+                <div class="flex items-center gap-3 bg-gray-800/50 border border-gray-700 rounded-xl px-4 py-3">
+                    {{ form.show_in_directory }}
+                    <div>
+                        <label class="text-gray-300 text-sm cursor-pointer select-none">{{ form.show_in_directory.label }}</label>
+                        <p class="text-gray-600 text-xs mt-0.5">Profilul tău va apărea în <a href="{% url 'member_directory' %}" class="text-cyan-400 hover:text-cyan-300 transition-colors">/membri/</a></p>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-gray-400 text-sm font-medium mb-2">{{ form.bio.label }}</label>
+                    {{ form.bio }}
+                    <p class="text-gray-600 text-xs mt-1.5">Maxim 500 de caractere.</p>
+                </div>
+
+                {% if form.non_field_errors %}
+                <div class="bg-red-900/30 border border-red-600/40 rounded-xl p-3">
+                    {% for error in form.non_field_errors %}
+                    <p class="text-red-400 text-sm">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <div class="flex gap-3 pt-2">
+                    <button type="submit"
+                            class="flex-1 bg-yellow-400 text-gray-950 font-bold py-3.5 rounded-xl hover:bg-yellow-300 transition-all hover:shadow-[0_0_24px_rgba(251,191,36,0.3)] text-base">
+                        Salvează modificările
+                    </button>
+                    <a href="{% url 'profile' %}"
+                       class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-300 font-semibold px-6 py-3.5 rounded-xl transition-all text-base">
+                        Anulează
+                    </a>
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+</div>
+</div>
+
+<script>
+document.getElementById('avatar-upload').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+        const placeholder = document.getElementById('avatar-placeholder');
+        let img = document.getElementById('avatar-preview');
+        if (!img) {
+            img = document.createElement('img');
+            img.id = 'avatar-preview';
+            img.className = 'w-16 h-16 rounded-2xl object-cover border-2 border-gray-700';
+            if (placeholder) placeholder.replaceWith(img);
+        }
+        img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+});
+</script>
+{% endblock %}

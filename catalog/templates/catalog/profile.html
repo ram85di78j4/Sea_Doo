@@ -1,0 +1,215 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Profilul meu — {{ SITE_NAME }}{% endblock %}
+{% block meta_description %}Profilul tău de membru în comunitatea de jet-ski din România.{% endblock %}
+
+{% block content %}
+<div class="pt-16">
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+
+    {% if messages %}
+    {% for msg in messages %}
+    <div class="bg-green-900/40 border border-green-600/40 rounded-xl px-5 py-3 mb-8 flex items-center gap-3">
+        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+        </svg>
+        <p class="text-green-300 text-sm">{{ msg }}</p>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <!-- Header card -->
+    <div class="bg-gray-900 border border-gray-800 rounded-2xl p-8 mb-6">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+
+            <!-- Avatar -->
+            <div class="flex-shrink-0">
+                {% if profile.avatar %}
+                <img src="{{ profile.avatar.url }}" alt="Avatar"
+                     class="w-20 h-20 rounded-2xl object-cover border-2 border-yellow-400/30">
+                {% else %}
+                <div class="w-20 h-20 bg-yellow-400/15 border border-yellow-400/25 rounded-2xl flex items-center justify-center">
+                    <span class="text-yellow-400 font-black text-2xl">
+                        {{ profile.user.first_name|first|upper }}{% if not profile.user.first_name %}{{ profile.user.email|first|upper }}{% endif %}
+                    </span>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Info -->
+            <div class="flex-1 min-w-0">
+                <h1 class="text-2xl font-black text-white mb-1">
+                    {{ profile.user.get_full_name|default:profile.user.email }}
+                </h1>
+                <p class="text-gray-500 text-sm mb-3">{{ profile.user.email }}</p>
+                <div class="flex flex-wrap gap-2">
+                    {% if profile.city %}
+                    <span class="bg-gray-800 border border-gray-700 text-gray-400 text-xs px-3 py-1 rounded-full">
+                        📍 {{ profile.city }}
+                    </span>
+                    {% endif %}
+                    {% if profile.favorite_brand %}
+                    <span class="bg-yellow-400/10 border border-yellow-400/20 text-yellow-400 text-xs px-3 py-1 rounded-full">
+                        {{ profile.get_favorite_brand_display }}
+                    </span>
+                    {% endif %}
+                    {% if profile.owns_jetski %}
+                    <span class="bg-cyan-400/10 border border-cyan-400/20 text-cyan-400 text-xs px-3 py-1 rounded-full">
+                        ✓ Proprietar jet-ski
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Edit button -->
+            <a href="{% url 'profile_edit' %}"
+               class="flex-shrink-0 bg-gray-800 hover:bg-gray-700 border border-gray-700 hover:border-yellow-400/40 text-gray-300 hover:text-yellow-400 font-semibold px-5 py-2.5 rounded-xl transition-all text-sm flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                </svg>
+                Editează
+            </a>
+        </div>
+    </div>
+
+    <!-- Badges -->
+    {% if badges %}
+    <div class="bg-gray-900 border border-gray-800 rounded-2xl px-6 py-5 mb-6">
+        <h2 class="text-gray-600 text-xs font-semibold uppercase tracking-widest mb-3">Insigne</h2>
+        <div class="flex flex-wrap gap-2">
+            {% for badge in badges %}
+            {% if badge.color == 'cyan' %}
+            <span class="bg-cyan-400/10 border border-cyan-400/20 text-cyan-400 text-xs font-semibold px-3 py-1 rounded-full">{{ badge.label }}</span>
+            {% elif badge.color == 'yellow' %}
+            <span class="bg-yellow-400/10 border border-yellow-400/20 text-yellow-400 text-xs font-semibold px-3 py-1 rounded-full">{{ badge.label }}</span>
+            {% elif badge.color == 'green' %}
+            <span class="bg-green-400/10 border border-green-400/20 text-green-400 text-xs font-semibold px-3 py-1 rounded-full">{{ badge.label }}</span>
+            {% elif badge.color == 'orange' %}
+            <span class="bg-orange-400/10 border border-orange-400/20 text-orange-400 text-xs font-semibold px-3 py-1 rounded-full">{{ badge.label }}</span>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Bio -->
+    {% if profile.bio %}
+    <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 mb-6">
+        <h2 class="text-gray-400 text-xs font-semibold uppercase tracking-widest mb-3">Despre mine</h2>
+        <p class="text-gray-300 leading-relaxed">{{ profile.bio }}</p>
+    </div>
+    {% endif %}
+
+    <!-- Details grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6">
+            <h2 class="text-gray-600 text-xs font-semibold uppercase tracking-widest mb-4">Detalii profil</h2>
+            <dl class="space-y-3">
+                <div class="flex justify-between text-sm">
+                    <dt class="text-gray-500">Oraș</dt>
+                    <dd class="text-white font-medium">{{ profile.city|default:"—" }}</dd>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <dt class="text-gray-500">Brand preferat</dt>
+                    <dd class="text-white font-medium">{{ profile.get_favorite_brand_display|default:"—" }}</dd>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <dt class="text-gray-500">Deține jet-ski</dt>
+                    <dd class="font-medium {% if profile.owns_jetski %}text-cyan-400{% else %}text-gray-500{% endif %}">
+                        {% if profile.owns_jetski %}Da{% else %}Nu{% endif %}
+                    </dd>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <dt class="text-gray-500">Membru din</dt>
+                    <dd class="text-white font-medium">{{ profile.created_at|date:"d M Y" }}</dd>
+                </div>
+            </dl>
+        </div>
+
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6">
+            <h2 class="text-gray-600 text-xs font-semibold uppercase tracking-widest mb-4">Comunitate</h2>
+            <div class="space-y-3">
+                <a href="{% url 'comunitate' %}"
+                   class="flex items-center justify-between group">
+                    <span class="text-gray-400 text-sm group-hover:text-cyan-400 transition-colors">Pagina comunității</span>
+                    <svg class="w-4 h-4 text-gray-600 group-hover:text-cyan-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </a>
+                <a href="{% url 'catalog_list' %}"
+                   class="flex items-center justify-between group">
+                    <span class="text-gray-400 text-sm group-hover:text-yellow-400 transition-colors">Catalog jet-ski</span>
+                    <svg class="w-4 h-4 text-gray-600 group-hover:text-yellow-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </a>
+                <a href="{% url 'profile_edit' %}"
+                   class="flex items-center justify-between group">
+                    <span class="text-gray-400 text-sm group-hover:text-yellow-400 transition-colors">Completează profilul</span>
+                    <svg class="w-4 h-4 text-gray-600 group-hover:text-yellow-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forum activity -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+
+        <!-- My topics -->
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-gray-600 text-xs font-semibold uppercase tracking-widest">Subiectele mele</h2>
+                <a href="{% url 'forum_index' %}" class="text-gray-700 hover:text-yellow-400 text-xs transition-colors">Forum &rsaquo;</a>
+            </div>
+            {% if my_topics %}
+            <div class="space-y-2">
+                {% for topic in my_topics %}
+                <a href="{% url 'topic_detail' topic.slug %}" class="block group">
+                    <p class="text-gray-300 text-xs font-medium group-hover:text-white transition-colors truncate">{{ topic.title }}</p>
+                    <p class="text-gray-700 text-xs">{{ topic.category.icon }} {{ topic.category.name }} · {{ topic.created_at|date:"d M Y" }}</p>
+                </a>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-gray-700 text-xs">Niciun subiect postat încă.</p>
+            <a href="{% url 'topic_new' %}" class="inline-block mt-2 text-yellow-400 text-xs hover:text-yellow-300 transition-colors">Creează primul subiect &rsaquo;</a>
+            {% endif %}
+        </div>
+
+        <!-- My replies -->
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-gray-600 text-xs font-semibold uppercase tracking-widest">Răspunsurile mele</h2>
+                <span class="text-gray-700 text-xs">{{ my_report_count }} rapoart{% if my_report_count == 1 %}e{% else %}e{% endif %} trimise</span>
+            </div>
+            {% if my_replies %}
+            <div class="space-y-2">
+                {% for reply in my_replies %}
+                <a href="{% url 'topic_detail' reply.topic.slug %}#reply-{{ reply.pk }}" class="block group">
+                    <p class="text-gray-500 text-xs group-hover:text-gray-300 transition-colors truncate">{{ reply.content|truncatechars:80 }}</p>
+                    <p class="text-gray-700 text-xs">La: {{ reply.topic.title|truncatechars:40 }} · {{ reply.created_at|date:"d M Y" }}</p>
+                </a>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-gray-700 text-xs">Niciun răspuns postat încă.</p>
+            {% endif %}
+        </div>
+
+    </div>
+
+    <!-- Logout -->
+    <div class="text-center mt-8">
+        <form method="post" action="{% url 'logout' %}" class="inline">
+            {% csrf_token %}
+            <button type="submit" class="text-gray-600 hover:text-red-400 text-sm transition-colors">
+                Deconectare
+            </button>
+        </form>
+    </div>
+
+</div>
+</div>
+{% endblock %}
