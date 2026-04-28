@@ -47,10 +47,11 @@ SECURE_HSTS_PRELOAD = True
 X_FRAME_OPTIONS = 'DENY'
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_BROWSER_XSS_FILTER = True
+SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
 
 # --- App settings ---
 HERO_VIDEO_URL = config('HERO_VIDEO_URL', default='')
-FORUM_EXTERNAL_URL = config('FORUM_EXTERNAL_URL', default='https://forum.domain.ro')
+FORUM_EXTERNAL_URL = config('FORUM_EXTERNAL_URL', default='')
 
 # --- Telegram notifications ---
 TELEGRAM_BOT_TOKEN = config('TELEGRAM_BOT_TOKEN', default='')
