@@ -13,19 +13,29 @@ _TEXTAREA_CLASS = (
     'focus:outline-none focus:border-yellow-400 transition-colors resize-none placeholder-gray-500'
 )
 
+_SELECT_CLASS = (
+    'w-full bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-3 '
+    'focus:outline-none focus:border-yellow-400 transition-colors appearance-none cursor-pointer'
+)
+
+_CHECKBOX_CLASS = 'w-4 h-4 rounded border-gray-600 bg-gray-800 text-yellow-400 focus:ring-yellow-400'
+
 
 class ContactForm(forms.ModelForm):
     class Meta:
         model = ContactMessage
-        fields = ['name', 'email', 'message']
+        fields = ['name', 'phone', 'interest', 'message']
         widgets = {
             'name': forms.TextInput(attrs={
                 'placeholder': 'Numele tău',
                 'class': _INPUT_CLASS,
             }),
-            'email': forms.EmailInput(attrs={
-                'placeholder': 'Email-ul tău',
+            'phone': forms.TextInput(attrs={
+                'placeholder': 'Numărul tău de telefon (opțional)',
                 'class': _INPUT_CLASS,
+            }),
+            'interest': forms.Select(attrs={
+                'class': _SELECT_CLASS,
             }),
             'message': forms.Textarea(attrs={
                 'placeholder': 'Mesajul tău...',
@@ -35,17 +45,23 @@ class ContactForm(forms.ModelForm):
         }
         labels = {
             'name': 'Nume',
-            'email': 'Email',
+            'phone': 'Telefon',
+            'interest': 'Ce te interesează?',
             'message': 'Mesaj',
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['phone'].required = False
+        self.fields['interest'].required = False
+        self.fields['interest'].choices = [
+            ('', '— Ce te interesează? —'),
+            ('catalog', 'Catalog / Modele'),
+            ('comunitate', 'Comunitate / Forum'),
+            ('evenimente', 'Evenimente / Tururi'),
+            ('altele', 'Altele'),
+        ]
 
-_SELECT_CLASS = (
-    'w-full bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-3 '
-    'focus:outline-none focus:border-yellow-400 transition-colors appearance-none cursor-pointer'
-)
-
-_CHECKBOX_CLASS = 'w-4 h-4 rounded border-gray-600 bg-gray-800 text-yellow-400 focus:ring-yellow-400'
 
 
 class CommunityWaitlistForm(forms.ModelForm):

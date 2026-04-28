@@ -101,74 +101,66 @@
     <!-- NAVBAR -->
     <nav class="fixed top-0 left-0 right-0 z-50 nav-blur border-b border-white/5">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
+            <div class="flex items-center justify-between h-12">
 
-                <a href="{% url 'home' %}" class="flex items-center gap-3 group">
-                    <div class="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center shadow-[0_0_12px_rgba(251,191,36,0.4)] flex-shrink-0">
-                        <svg class="w-4 h-4 text-gray-950" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 20 14">
+                <a href="{% url 'home' %}" class="flex items-center gap-2.5 group flex-shrink-0">
+                    <div class="w-7 h-7 bg-yellow-400 rounded-full flex items-center justify-center shadow-[0_0_10px_rgba(251,191,36,0.35)] flex-shrink-0">
+                        <svg class="w-3.5 h-3.5 text-gray-950" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 20 14">
                             <path d="M1 7 Q5 2 10 7 Q15 12 19 7"/>
                             <path d="M4 11 Q7 8 10 10 Q13 12 16 10" stroke-width="1.5" opacity="0.5"/>
                         </svg>
                     </div>
-                    <span class="font-bold text-base tracking-wide">{{ SITE_NAME }}</span>
+                    <span class="font-bold text-sm tracking-wide">{{ SITE_NAME }}</span>
                 </a>
-                <span class="hidden lg:block text-gray-700 text-xs font-medium ml-1 mt-0.5">{{ SITE_TAGLINE }}</span>
 
-                <div class="hidden md:flex items-center gap-8">
-                    <a href="{% url 'home' %}" class="text-gray-400 hover:text-yellow-400 transition-colors text-sm font-medium">Acasă</a>
-                    <a href="{% url 'catalog_list' %}" class="text-gray-400 hover:text-yellow-400 transition-colors text-sm font-medium">Catalog</a>
-                    <a href="{% url 'comunitate' %}" class="text-gray-400 hover:text-cyan-400 transition-colors text-sm font-medium">Comunitate</a>
-                    <a href="{% url 'forum_index' %}" class="text-gray-400 hover:text-yellow-400 transition-colors text-sm font-medium">Forum</a>
-                    <a href="{% url 'member_directory' %}" class="text-gray-400 hover:text-yellow-400 transition-colors text-sm font-medium">Membri</a>
-                    <a href="{% url 'about' %}" class="text-gray-400 hover:text-yellow-400 transition-colors text-sm font-medium">Despre</a>
-                    <a href="{% url 'contact_page' %}" class="text-gray-400 hover:text-yellow-400 transition-colors text-sm font-medium">Contact</a>
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="{% url 'home' %}" class="text-gray-400 hover:text-white transition-colors text-sm">Acasă</a>
+                    <a href="{% url 'catalog_list' %}" class="text-gray-400 hover:text-white transition-colors text-sm">Catalog</a>
+                    <a href="{% url 'comunitate' %}" class="text-gray-400 hover:text-cyan-400 transition-colors text-sm">Comunitate</a>
+                    <a href="{% url 'forum_index' %}" class="text-gray-400 hover:text-white transition-colors text-sm">Forum</a>
+                    <a href="{% url 'member_directory' %}" class="text-gray-400 hover:text-white transition-colors text-sm">Membri</a>
+                    <a href="{% url 'contact_page' %}" class="text-gray-400 hover:text-white transition-colors text-sm">Contact</a>
+
+                    <div class="w-px h-4 bg-white/10"></div>
 
                     {% if user.is_authenticated %}
-                    <a href="{% url 'profile' %}" class="text-gray-400 hover:text-cyan-400 transition-colors text-sm font-medium">Profil</a>
+                    <a href="{% url 'profile' %}" class="text-cyan-400 hover:text-cyan-300 transition-colors text-sm font-medium">Profil</a>
                     <form method="post" action="{% url 'logout' %}" class="inline">
                         {% csrf_token %}
-                        <button type="submit" class="text-gray-400 hover:text-red-400 transition-colors text-sm font-medium">Deconectare</button>
+                        <button type="submit" class="text-gray-500 hover:text-red-400 transition-colors text-sm">Ieșire</button>
                     </form>
                     {% else %}
                     <a href="{% url 'login' %}" class="text-gray-400 hover:text-yellow-400 transition-colors text-sm font-medium">Autentificare</a>
-                    <a href="{% url 'register' %}"
-                       class="bg-yellow-400 text-gray-950 hover:bg-yellow-300 px-4 py-1.5 rounded-full text-sm font-bold transition-all">
-                        Creează cont
-                    </a>
                     {% endif %}
-
-                    <a href="/admin/"
-                       class="border border-yellow-400/60 text-yellow-400 hover:bg-yellow-400 hover:text-gray-950 px-4 py-1.5 rounded-full text-sm font-semibold transition-all">
-                        Admin
-                    </a>
                 </div>
 
-                <button id="mobileMenuBtn" class="md:hidden text-gray-400 hover:text-white p-1">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button id="mobileMenuBtn" class="md:hidden text-gray-500 hover:text-white p-1.5 rounded-lg hover:bg-white/5 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                     </svg>
                 </button>
             </div>
         </div>
 
-        <div id="mobileMenu" class="hidden md:hidden bg-gray-950 border-t border-white/5 px-4 py-4 space-y-3">
-            <a href="{% url 'home' %}" class="block text-gray-400 hover:text-yellow-400 font-medium py-1">Acasă</a>
-            <a href="{% url 'catalog_list' %}" class="block text-gray-400 hover:text-yellow-400 font-medium py-1">Catalog</a>
-            <a href="{% url 'comunitate' %}" class="block text-gray-400 hover:text-cyan-400 font-medium py-1">Comunitate</a>
-            <a href="{% url 'forum_index' %}" class="block text-gray-400 hover:text-yellow-400 font-medium py-1">Forum</a>
-            <a href="{% url 'member_directory' %}" class="block text-gray-400 hover:text-yellow-400 font-medium py-1">Membri</a>
-            <a href="{% url 'about' %}" class="block text-gray-400 hover:text-yellow-400 font-medium py-1">Despre</a>
-            <a href="{% url 'contact_page' %}" class="block text-gray-400 hover:text-yellow-400 font-medium py-1">Contact</a>
-            <div class="border-t border-white/5 pt-3 space-y-3">
+        <div id="mobileMenu" class="hidden md:hidden bg-gray-950/98 border-t border-white/5 px-4 py-2">
+            <div class="space-y-0.5">
+                <a href="{% url 'home' %}" class="flex items-center text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-3 py-2.5 text-sm transition-colors">Acasă</a>
+                <a href="{% url 'catalog_list' %}" class="flex items-center text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-3 py-2.5 text-sm transition-colors">Catalog</a>
+                <a href="{% url 'comunitate' %}" class="flex items-center text-gray-400 hover:text-cyan-400 hover:bg-white/5 rounded-lg px-3 py-2.5 text-sm transition-colors">Comunitate</a>
+                <a href="{% url 'forum_index' %}" class="flex items-center text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-3 py-2.5 text-sm transition-colors">Forum</a>
+                <a href="{% url 'member_directory' %}" class="flex items-center text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-3 py-2.5 text-sm transition-colors">Membri</a>
+                <a href="{% url 'contact_page' %}" class="flex items-center text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-3 py-2.5 text-sm transition-colors">Contact</a>
+            </div>
+            <div class="border-t border-white/5 mt-1.5 pt-1.5">
                 {% if user.is_authenticated %}
-                <a href="{% url 'profile' %}" class="block text-cyan-400 hover:text-cyan-300 font-medium py-1">Profilul meu</a>
+                <a href="{% url 'profile' %}" class="flex items-center text-cyan-400 hover:text-cyan-300 hover:bg-white/5 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors">Profilul meu</a>
                 <form method="post" action="{% url 'logout' %}" class="block">
                     {% csrf_token %}
-                    <button type="submit" class="text-gray-500 hover:text-red-400 font-medium text-left w-full py-1">Deconectare</button>
+                    <button type="submit" class="flex items-center w-full text-gray-500 hover:text-red-400 hover:bg-white/5 rounded-lg px-3 py-2.5 text-sm transition-colors">Ieșire din cont</button>
                 </form>
                 {% else %}
-                <a href="{% url 'login' %}" class="block text-gray-400 hover:text-yellow-400 font-medium py-1">Autentificare</a>
-                <a href="{% url 'register' %}" class="block text-yellow-400 hover:text-yellow-300 font-bold py-1">Creează cont gratuit</a>
+                <a href="{% url 'login' %}" class="flex items-center text-gray-400 hover:text-yellow-400 hover:bg-white/5 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors">Autentificare</a>
+                <a href="{% url 'register' %}" class="flex items-center text-yellow-400 hover:text-yellow-300 hover:bg-yellow-400/5 rounded-lg px-3 py-2.5 text-sm font-semibold transition-colors">Creează cont gratuit</a>
                 {% endif %}
             </div>
         </div>
@@ -176,7 +168,7 @@
 
     <!-- FLASH MESSAGES -->
     {% if messages %}
-    <div class="fixed top-20 left-4 right-4 sm:left-auto sm:right-4 sm:max-w-sm z-50 space-y-2">
+    <div class="fixed top-14 left-4 right-4 sm:left-auto sm:right-4 sm:max-w-sm z-50 space-y-2">
         {% for message in messages %}
         <div class="bg-green-900/90 border border-green-600/50 text-green-100 px-5 py-3 rounded-xl shadow-2xl flex items-start gap-3 backdrop-blur">
             <svg class="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

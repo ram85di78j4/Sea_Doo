@@ -1,3 +1,7 @@
+import json
+import logging
+import urllib.request
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
 from django.db.models import Q, Count
@@ -8,8 +12,25 @@ from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
 from django.utils import timezone
+
 from .models import JetSki, ForumCategory, ForumTopicPreview, ForumTopic, ForumReply, ForumReport, CommunityWaitlist, EventPreview, Testimonial, MemberProfile
 from .forms import ContactForm, CommunityWaitlistForm, RegistrationForm, ProfileEditForm, ForumTopicForm, ForumReplyForm, ForumReportForm
+
+logger = logging.getLogger(__name__)
+
+
+def _send_telegram(msg):
+    token = getattr(settings, 'TELEGRAM_BOT_TOKEN', '')
+    chat_id = getattr(settings, 'TELEGRAM_CHAT_ID', '')
+    if not token or not chat_id:
+        return
+    try:
+        url = f'https://api.telegram.org/bot{token}/sendMessage'
+        payload = json.dumps({'chat_id': chat_id, 'text': msg}).encode()
+        req = urllib.request.Request(url, data=payload, headers={'Content-Type': 'application/json'}, method='POST')
+        urllib.request.urlopen(req, timeout=5)
+    except Exception as e:
+        logger.warning('Telegram notification failed: %s', e)
 
 
 def home(request):
@@ -23,8 +44,16 @@ def home(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Mesajul tau a fost trimis! Te vom contacta in curand.')
+            obj = form.save()
+            interest_label = dict(obj.INTEREST_CHOICES).get(obj.interest, obj.interest) or 'nespecificat'
+            _send_telegram(
+                f'\U0001f30a Nou mesaj \u2014 SeaDoo.ro\n'
+                f'\U0001f464 Nume: {obj.name}\n'
+                f'\U0001f4f1 Telefon: {obj.phone or "necompletat"}\n'
+                f'\U0001f3af Interes: {interest_label}\n'
+                f'\U0001f4ac Mesaj: {obj.message}'
+            )
+            messages.success(request, 'Mesajul tău a fost trimis! Te vom contacta în curând.')
             return redirect('home')
 
     context = {
@@ -161,7 +190,15 @@ def contact_page(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
-            form.save()
+            obj = form.save()
+            interest_label = dict(obj.INTEREST_CHOICES).get(obj.interest, obj.interest) or 'nespecificat'
+            _send_telegram(
+                f'\U0001f30a Nou mesaj \u2014 SeaDoo.ro\n'
+                f'\U0001f464 Nume: {obj.name}\n'
+                f'\U0001f4f1 Telefon: {obj.phone or "necompletat"}\n'
+                f'\U0001f3af Interes: {interest_label}\n'
+                f'\U0001f4ac Mesaj: {obj.message}'
+            )
             messages.success(request, 'Mesajul tău a fost trimis! Te vom contacta în curând.')
             return redirect('contact_page')
     return render(request, 'catalog/contact_page.html', {'form': form})

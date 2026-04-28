@@ -51,3 +51,7 @@ SECURE_BROWSER_XSS_FILTER = True
 # --- App settings ---
 HERO_VIDEO_URL = config('HERO_VIDEO_URL', default='')
 FORUM_EXTERNAL_URL = config('FORUM_EXTERNAL_URL', default='https://forum.domain.ro')
+
+# --- Telegram notifications ---
+TELEGRAM_BOT_TOKEN = config('TELEGRAM_BOT_TOKEN', default='')
+TELEGRAM_CHAT_ID = config('TELEGRAM_CHAT_ID', default='')

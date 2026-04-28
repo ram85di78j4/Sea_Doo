@@ -240,8 +240,17 @@ class Testimonial(models.Model):
 
 
 class ContactMessage(models.Model):
+    INTEREST_CHOICES = [
+        ('', '—'),
+        ('catalog', 'Catalog / Modele'),
+        ('comunitate', 'Comunitate / Forum'),
+        ('evenimente', 'Evenimente / Tururi'),
+        ('altele', 'Altele'),
+    ]
     name = models.CharField(max_length=200, verbose_name='Nume')
-    email = models.EmailField(verbose_name='Email')
+    email = models.EmailField(blank=True, verbose_name='Email')
+    phone = models.CharField(max_length=30, blank=True, verbose_name='Telefon')
+    interest = models.CharField(max_length=50, blank=True, choices=INTEREST_CHOICES, verbose_name='Interes')
     message = models.TextField(verbose_name='Mesaj')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Trimis la')
     is_read = models.BooleanField(default=False, verbose_name='Citit')
@@ -252,7 +261,8 @@ class ContactMessage(models.Model):
         ordering = ['-created_at']
 
     def __str__(self):
-        return f"{self.name} <{self.email}>"
+        contact = self.phone or self.email or 'fără contact'
+        return f"{self.name} — {contact}"
 
 
 class SiteSetting(models.Model):
