@@ -53,7 +53,7 @@ def home(request):
                 f'\U0001f3af Interes: {interest_label}\n'
                 f'\U0001f4ac Mesaj: {obj.message}'
             )
-            messages.success(request, 'Mesajul tău a fost trimis! Te vom contacta în curând.')
+            messages.success(request, 'Mesaj trimis. Revenim în scurt timp.')
             return redirect('home')
 
     context = {
@@ -199,7 +199,7 @@ def contact_page(request):
                 f'\U0001f3af Interes: {interest_label}\n'
                 f'\U0001f4ac Mesaj: {obj.message}'
             )
-            messages.success(request, 'Mesajul tău a fost trimis! Te vom contacta în curând.')
+            messages.success(request, 'Mesaj trimis. Revenim în scurt timp.')
             return redirect('contact_page')
     return render(request, 'catalog/contact_page.html', {'form': form})
 

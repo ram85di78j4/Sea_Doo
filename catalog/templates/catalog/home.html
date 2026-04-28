@@ -55,20 +55,22 @@
             <span class="text-gradient">Libertate.</span>
         </h1>
 
-        <p class="text-base sm:text-lg md:text-xl text-gray-400 max-w-xl mx-auto mb-10 leading-relaxed fade-up fade-up-2">
+        <p class="text-xs text-gray-600 italic mb-4 fade-up fade-up-2">Nu este doar o colecție. Este un stil de viață.</p>
+        <p class="text-base sm:text-lg text-gray-400 max-w-lg mx-auto mb-8 leading-relaxed fade-up fade-up-2">
             Catalogul și comunitatea de jet-ski pentru pasionații din România.
         </p>
 
         <div class="flex flex-col sm:flex-row gap-3 justify-center fade-up fade-up-3">
             <a href="{% url 'catalog_list' %}"
                class="w-full sm:w-auto bg-yellow-400 text-gray-950 font-bold px-8 py-3.5 rounded-full text-base hover:bg-yellow-300 transition-all duration-200 hover:shadow-[0_0_32px_rgba(251,191,36,0.35)] hover:scale-[1.02] active:scale-100">
-                Explorează colecția
+                Vezi colecția
             </a>
             <a href="{% url 'comunitate' %}"
                class="w-full sm:w-auto border-2 border-cyan-400/60 text-cyan-400 font-bold px-8 py-3.5 rounded-full text-base hover:bg-cyan-400 hover:text-gray-950 transition-all duration-200 hover:scale-[1.02] active:scale-100">
                 Intră în comunitate
             </a>
         </div>
+        <p class="text-gray-700 text-xs mt-3 fade-up fade-up-3">Modele reale · Comunitate în creștere · Fără spam</p>
 
         <!-- Stats row -->
         <div class="flex flex-wrap justify-center gap-6 sm:gap-10 mt-12 pt-8 border-t border-white/5 fade-up fade-up-4">
@@ -90,6 +92,14 @@
                 <div class="text-3xl font-black text-yellow-400">#1</div>
                 <div class="text-gray-600 text-sm mt-1">Comunitate RO</div>
             </div>
+        </div>
+
+        <!-- Scroll indicator -->
+        <div class="mt-10 flex flex-col items-center gap-1.5">
+            <span class="text-gray-700 text-xs uppercase tracking-widest opacity-70">Explorează mai jos</span>
+            <svg class="w-4 h-4 text-gray-700 opacity-50 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/>
+            </svg>
         </div>
 
     </div>
@@ -127,6 +137,14 @@
         </div>
     </div>
 </section>
+
+<!-- Members trust strip -->
+<div class="bg-black/30 border-b border-white/5 py-2.5">
+    <p class="text-center text-gray-600 text-xs tracking-wide px-4">
+        <span class="text-gray-500">Membri din toată România:</span>
+        &nbsp;București · Constanța · Timișoara · Cluj-Napoca · Brașov · Iași · Galați
+    </p>
+</div>
 
 
 <!-- ======================================
@@ -427,7 +445,7 @@
      EVENTS PREVIEW SECTION
      ====================================== -->
 {% if events %}
-<section class="py-24 bg-gray-950">
+<section class="py-14 md:py-24 bg-gray-950">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
@@ -492,6 +510,22 @@
             </p>
         </div>
 
+        <!-- Forum credibility -->
+        <div class="flex flex-wrap justify-center gap-6 sm:gap-12 mb-10 pb-10 border-b border-white/5">
+            <div class="text-center">
+                <div class="text-xl font-black text-cyan-400">{{ forum_categories|length }}</div>
+                <div class="text-gray-600 text-xs uppercase tracking-wide mt-0.5">Categorii active</div>
+            </div>
+            <div class="text-center">
+                <div class="text-xl font-black text-white">100+</div>
+                <div class="text-gray-600 text-xs uppercase tracking-wide mt-0.5">Membri înscriși</div>
+            </div>
+            <div class="text-center">
+                <div class="text-xl font-black text-yellow-400">#1</div>
+                <div class="text-gray-600 text-xs uppercase tracking-wide mt-0.5">Comunitate RO</div>
+            </div>
+        </div>
+
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-14">
             {% for category in forum_categories %}
             <a href="{% url 'forum_index' %}" class="bg-gray-900 border border-gray-800 rounded-2xl p-5 hover:border-cyan-400/25 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200 group h-full block">
@@ -508,7 +542,10 @@
                 </div>
             </a>
             {% empty %}
-            <div class="col-span-4 text-center py-8 text-gray-600 text-sm">Categoriile se încarcă...</div>
+            <div class="col-span-4 text-center py-10">
+                <p class="text-gray-600 text-sm mb-3">Nicio categorie disponibilă momentan.</p>
+                <a href="{% url 'forum_index' %}" class="text-cyan-400 text-sm hover:text-cyan-300 transition-colors">Mergi la forum →</a>
+            </div>
             {% endfor %}
         </div>
 
@@ -697,16 +734,16 @@
 <!-- ======================================
      TESTIMONIALS SECTION
      ====================================== -->
-{% if testimonials %}
-<section class="py-24 bg-gray-900 border-t border-white/5">
+<section class="py-14 md:py-24 bg-gray-900 border-t border-white/5">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        <div class="text-center mb-14">
+        <div class="text-center mb-12">
             <span class="text-yellow-400 text-xs font-semibold uppercase tracking-widest mb-4 block">Comunitate</span>
             <h2 class="text-3xl md:text-4xl font-black">Ce spun membrii</h2>
-            <p class="text-gray-500 mt-3 max-w-xl mx-auto">Pasionați reali, experiențe reale.</p>
+            <p class="text-gray-500 mt-2 text-sm">Pasionați reali, experiențe autentice.</p>
         </div>
 
+        {% if testimonials %}
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             {% for t in testimonials %}
             <div class="bg-gray-950 border border-gray-800 rounded-2xl p-7 flex flex-col hover:border-yellow-400/15 transition-all">
@@ -732,10 +769,15 @@
             </div>
             {% endfor %}
         </div>
+        {% else %}
+        <div class="text-center py-10 border border-white/5 rounded-2xl">
+            <p class="text-gray-600 text-sm mb-4">Primele recenzii apar în curând.</p>
+            <a href="{% url 'comunitate' %}#inscrie-te" class="text-yellow-400 text-sm hover:text-yellow-300 transition-colors font-medium">Fii printre primii membri →</a>
+        </div>
+        {% endif %}
 
     </div>
 </section>
-{% endif %}
 
 
 <!-- ======================================
@@ -804,26 +846,28 @@
 
             <div class="lg:pt-4">
                 <span class="text-yellow-400 text-xs font-semibold uppercase tracking-widest mb-5 block">Contact</span>
-                <h2 class="text-4xl md:text-5xl font-black mb-6 leading-tight">
-                    Hai să vorbim<br>
-                    <span class="text-gradient">despre apă.</span>
+                <h2 class="text-3xl md:text-4xl font-black mb-4 leading-tight">
+                    Vrei să discutam<br>
+                    <span class="text-gradient">direct?</span>
                 </h2>
-                <p class="text-gray-400 text-lg leading-relaxed mb-10">
-                    Ai o întrebare despre colecție, vrei să te alături comunității sau pur și simplu vrei să schimbi câteva cuvinte cu un pasionat? Scrie-mi.
+                <p class="text-gray-500 text-base leading-relaxed mb-5">
+                    Scrie-ne orice legat de jet-ski, colecție sau comunitate.
                 </p>
+                <div class="flex items-center gap-2 text-cyan-400 text-sm mb-8 font-medium">
+                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    Răspundem rapid pe Telegram
+                </div>
 
-                <div class="space-y-5">
-                    <div class="flex items-center gap-4">
-                        <div class="w-11 h-11 bg-yellow-400/10 rounded-xl flex items-center justify-center text-xl flex-shrink-0">📧</div>
-                        <span class="text-gray-400">contact@seadoo.ro</span>
+                <div class="space-y-3">
+                    <div class="flex items-center gap-3 text-gray-500 text-sm">
+                        <span class="text-yellow-400 text-base">📧</span>
+                        {% if CONTACT_EMAIL %}<a href="mailto:{{ CONTACT_EMAIL }}" class="hover:text-yellow-400 transition-colors">{{ CONTACT_EMAIL }}</a>{% else %}<span>contact@seadoo.ro</span>{% endif %}
                     </div>
-                    <div class="flex items-center gap-4">
-                        <div class="w-11 h-11 bg-cyan-400/10 rounded-xl flex items-center justify-center text-xl flex-shrink-0">📍</div>
-                        <span class="text-gray-400">România</span>
-                    </div>
-                    <div class="flex items-center gap-4">
-                        <div class="w-11 h-11 bg-blue-400/10 rounded-xl flex items-center justify-center text-xl flex-shrink-0">🌊</div>
-                        <span class="text-gray-400">Dunăre · Lacuri · Marea Neagră</span>
+                    <div class="flex items-center gap-3 text-gray-500 text-sm">
+                        <span class="text-cyan-400 text-base">📍</span>
+                        <span>România · Dunăre · Lacuri · Marea Neagră</span>
                     </div>
                 </div>
             </div>
