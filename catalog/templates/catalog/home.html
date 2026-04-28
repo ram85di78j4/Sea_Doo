@@ -177,25 +177,38 @@
             </div>
 
             <div class="relative">
-                <div class="rounded-2xl overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700/60 aspect-[4/3] flex items-center justify-center">
-                    <div class="text-center p-10">
-                        <div class="text-8xl mb-5">🌊</div>
-                        <p class="text-gray-600 text-sm">Foto colecție personală</p>
-                    </div>
+                <div class="rounded-2xl overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700/60 aspect-[4/3]">
+                    {% with hero_model=featured.0 %}
+                    {% if hero_model and hero_model.main_image %}
+                        <img src="{{ hero_model.main_image.url }}" alt="{{ hero_model.title }}"
+                             class="w-full h-full object-cover">
+                    {% else %}
+                        <div class="w-full h-full flex items-center justify-center">
+                            <div class="text-center p-10">
+                                <div class="text-8xl mb-5">🌊</div>
+                                <p class="text-gray-600 text-sm">Adaugă imagine din Admin → Jet Ski → {{ hero_model.title|default:"modelul favorit" }}</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% endwith %}
                 </div>
                 <!-- Glow accents -->
                 <div class="absolute -top-6 -right-6 w-28 h-28 bg-yellow-400/8 rounded-full blur-2xl pointer-events-none"></div>
                 <div class="absolute -bottom-6 -left-6 w-36 h-36 bg-cyan-400/8 rounded-full blur-2xl pointer-events-none"></div>
                 <!-- Floating card -->
+                {% with hero_model=featured.0 %}
+                {% if hero_model %}
                 <div class="absolute -bottom-5 -left-5 bg-gray-900 border border-gray-700 rounded-2xl p-4 shadow-2xl hidden sm:block">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 bg-yellow-400/15 rounded-xl flex items-center justify-center text-xl">⚡</div>
                         <div>
-                            <div class="text-white font-bold text-sm">Sea-Doo RXT-X 300</div>
-                            <div class="text-gray-500 text-xs">300 CP · Cel mai rapid</div>
+                            <div class="text-white font-bold text-sm">{{ hero_model.title }}</div>
+                            <div class="text-gray-500 text-xs">{{ hero_model.horsepower }} CP · Cel mai rapid</div>
                         </div>
                     </div>
                 </div>
+                {% endif %}
+                {% endwith %}
             </div>
 
         </div>
@@ -440,11 +453,20 @@
             </div>
 
             <div class="relative">
-                <div class="rounded-2xl overflow-hidden bg-gradient-to-br from-blue-900/25 to-gray-900 border border-blue-800/20 aspect-square flex items-center justify-center">
-                    <div class="text-center p-14">
-                        <div class="text-9xl mb-6">🌊</div>
-                        <p class="text-blue-300 font-bold text-xl">Sea-Doo RXT-X 300</p>
-                    </div>
+                <div class="rounded-2xl overflow-hidden bg-gradient-to-br from-blue-900/25 to-gray-900 border border-blue-800/20 aspect-square">
+                    {% with perf_model=featured.0 %}
+                    {% if perf_model and perf_model.main_image %}
+                        <img src="{{ perf_model.main_image.url }}" alt="{{ perf_model.title }}"
+                             class="w-full h-full object-cover opacity-90">
+                    {% else %}
+                        <div class="w-full h-full flex items-center justify-center">
+                            <div class="text-center p-14">
+                                <div class="text-9xl mb-6">🌊</div>
+                                <p class="text-blue-300 font-bold text-xl">{{ perf_model.title|default:"Sea-Doo RXT-X 300" }}</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% endwith %}
                 </div>
                 <div class="absolute -bottom-4 -right-4 bg-yellow-400 text-gray-950 font-black text-xs px-4 py-2 rounded-xl shadow-lg">
                     #1 în colecție
