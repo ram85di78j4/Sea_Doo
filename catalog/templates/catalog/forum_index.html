@@ -190,8 +190,29 @@
         <p class="text-gray-500 text-sm mb-4">Încearcă un alt termen de căutare.</p>
         <a href="{% url 'forum_index' %}" class="text-yellow-400 text-sm hover:text-yellow-300 transition-colors">← Înapoi la forum</a>
         {% else %}
-        <h3 class="text-white font-bold text-lg mb-2">Nu există subiecte încă</h3>
-        <p class="text-gray-500 text-sm mb-6">Fii primul care deschide o discuție în comunitate!</p>
+        <h3 class="text-white font-bold text-lg mb-2">Fii primul care deschide o discuție.</h3>
+        <p class="text-gray-400 text-sm mb-6">Comunitatea așteaptă primul subiect. Poți începe cu orice.</p>
+        <div class="flex flex-col gap-2 max-w-sm mx-auto mb-8 text-left">
+            <p class="text-gray-600 text-xs uppercase tracking-wider mb-1 text-center">Idei de subiecte</p>
+            {% if user.is_authenticated %}
+            <a href="{% url 'topic_new' %}?titlu=Ce+jet-ski+ai+si+cum+il+folosesti"
+               class="bg-gray-800 hover:bg-gray-750 border border-gray-700 hover:border-yellow-400/30 text-gray-300 hover:text-white text-sm px-4 py-2.5 rounded-xl transition-all">
+                💬 Ce jet-ski ai și cum îl folosești?
+            </a>
+            <a href="{% url 'topic_new' %}?titlu=Ce+verifici+inainte+de+cumparare"
+               class="bg-gray-800 border border-gray-700 hover:border-yellow-400/30 text-gray-300 hover:text-white text-sm px-4 py-2.5 rounded-xl transition-all">
+                🔍 Ce verifici înainte de cumpărare?
+            </a>
+            <a href="{% url 'topic_new' %}?titlu=Unde+iesi+cel+mai+des+pe+apa"
+               class="bg-gray-800 border border-gray-700 hover:border-yellow-400/30 text-gray-300 hover:text-white text-sm px-4 py-2.5 rounded-xl transition-all">
+                🌊 Unde ieși cel mai des pe apă?
+            </a>
+            {% else %}
+            <div class="bg-gray-800 border border-gray-700 text-gray-400 text-sm px-4 py-2.5 rounded-xl">💬 Ce jet-ski ai și cum îl folosești?</div>
+            <div class="bg-gray-800 border border-gray-700 text-gray-400 text-sm px-4 py-2.5 rounded-xl">🔍 Ce verifici înainte de cumpărare?</div>
+            <div class="bg-gray-800 border border-gray-700 text-gray-400 text-sm px-4 py-2.5 rounded-xl">🌊 Unde ieși cel mai des pe apă?</div>
+            {% endif %}
+        </div>
         {% if user.is_authenticated %}
         <a href="{% url 'topic_new' %}" class="inline-flex bg-yellow-400 text-gray-950 font-bold px-6 py-3 rounded-xl hover:bg-yellow-300 transition-all">
             Creează primul subiect

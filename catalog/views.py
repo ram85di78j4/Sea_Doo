@@ -181,6 +181,35 @@ def catalog_detail(request, slug):
     return render(request, 'catalog/catalog_detail.html', context)
 
 
+def lead_offer(request, slug):
+    jetski = get_object_or_404(JetSki, slug=slug)
+    if request.method == 'POST':
+        name = request.POST.get('name', '').strip()
+        phone = request.POST.get('phone', '').strip()
+        message = request.POST.get('message', '').strip()
+
+        logger.info(
+            'LEAD_OFFER slug=%s brand=%s name=%s phone=%s',
+            slug, jetski.brand, name or '\u2013', phone or '\u2013',
+        )
+
+        _send_telegram(
+            '\U0001f525 NOU LEAD \u2014 SeaDoo.ro\n'
+            f'\U0001f4e6 Model: {jetski.title}\n'
+            f'\U0001f3f7\ufe0f Brand: {jetski.brand}\n'
+            f'\U0001f464 Nume: {name or "necompletat"}\n'
+            f'\U0001f4f1 Telefon: {phone or "necompletat"}\n'
+            f'\U0001f4ac Mesaj: {message or "\u2013"}\n'
+            f'\U0001f517 Utilizator interesat de ofert\u0103.'
+        )
+
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'ok': True})
+        messages.success(request, 'Cerere trimis\u0103. Revenim \u00een scurt timp.')
+        return redirect('catalog_detail', slug=slug)
+    return redirect('catalog_detail', slug=slug)
+
+
 def about_page(request):
     return render(request, 'catalog/about.html')
 
