@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
-from .models import ContactMessage, CommunityWaitlist, MemberProfile, ForumTopic, ForumReply, ForumCategory, ForumReport
+from .models import ContactMessage, CommunityWaitlist, MemberProfile, ForumTopic, ForumReply, ForumCategory, ForumReport, PartnerRequest
 
 _INPUT_CLASS = (
     'w-full bg-gray-900 border border-gray-700/80 text-white rounded-xl px-4 py-3 '
@@ -318,3 +318,52 @@ class ForumReportForm(forms.ModelForm):
             'reason': 'Motiv raportare',
             'details': 'Detalii suplimentare (opțional)',
         }
+
+
+class PartnerRequestForm(forms.ModelForm):
+    class Meta:
+        model = PartnerRequest
+        fields = ['business_name', 'contact_name', 'phone', 'partner_type', 'city', 'message']
+        widgets = {
+            'business_name': forms.TextInput(attrs={
+                'placeholder': 'ex. Jet Aqua SRL',
+                'class': _INPUT_CLASS,
+            }),
+            'contact_name': forms.TextInput(attrs={
+                'placeholder': 'Persoana de contact',
+                'class': _INPUT_CLASS,
+            }),
+            'phone': forms.TextInput(attrs={
+                'placeholder': '07xx xxx xxx',
+                'class': _INPUT_CLASS,
+                'inputmode': 'tel',
+            }),
+            'partner_type': forms.Select(attrs={
+                'class': _SELECT_CLASS,
+            }),
+            'city': forms.TextInput(attrs={
+                'placeholder': 'Orașul / zona de activitate',
+                'class': _INPUT_CLASS,
+            }),
+            'message': forms.Textarea(attrs={
+                'placeholder': 'Spune-ne câteva cuvinte despre businessul tău (opțional)...',
+                'rows': 3,
+                'class': _TEXTAREA_CLASS,
+            }),
+        }
+        labels = {
+            'business_name': 'Nume business',
+            'contact_name': 'Persoană contact',
+            'phone': 'Telefon',
+            'partner_type': 'Tip activitate',
+            'city': 'Oraș (opțional)',
+            'message': 'Mesaj (opțional)',
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['partner_type'].choices = [
+            ('', '— Alege tipul activității —'),
+        ] + list(PartnerRequest.PARTNER_TYPE_CHOICES)
+        self.fields['city'].required = False
+        self.fields['message'].required = False

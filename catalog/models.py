@@ -294,6 +294,81 @@ def get_site_setting(key, fallback=''):
         return getattr(django_settings, key, fallback)
 
 
+class Partner(models.Model):
+    PARTNER_TYPE_CHOICES = [
+        ('dealer', 'Dealer jet-ski'),
+        ('service', 'Service / Reparații'),
+        ('accessories', 'Accesorii & Echipamente'),
+        ('rental', 'Închirieri'),
+        ('event', 'Evenimente & Tururi'),
+        ('other', 'Altele'),
+    ]
+
+    name = models.CharField(max_length=200, verbose_name='Nume')
+    slug = models.SlugField(max_length=250, unique=True, blank=True, verbose_name='Slug URL')
+    partner_type = models.CharField(max_length=20, choices=PARTNER_TYPE_CHOICES, verbose_name='Tip partener')
+    city = models.CharField(max_length=100, blank=True, verbose_name='Oraș')
+    short_description = models.TextField(max_length=300, verbose_name='Descriere scurtă')
+    full_description = models.TextField(blank=True, verbose_name='Descriere completă')
+    website_url = models.URLField(blank=True, verbose_name='Website')
+    telegram_url = models.URLField(blank=True, verbose_name='Telegram URL')
+    phone = models.CharField(max_length=30, blank=True, verbose_name='Telefon')
+    logo = models.ImageField(upload_to='partners/logos/', blank=True, null=True, verbose_name='Logo')
+    cover_image = models.ImageField(upload_to='partners/covers/', blank=True, null=True, verbose_name='Imagine copertă')
+    badge_text = models.CharField(max_length=50, blank=True, verbose_name='Text badge')
+    is_featured = models.BooleanField(default=False, verbose_name='Promovat')
+    is_active = models.BooleanField(default=True, verbose_name='Activ')
+    order = models.PositiveIntegerField(default=0, verbose_name='Ordine')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Creat la')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='Actualizat la')
+
+    class Meta:
+        verbose_name = 'Partener'
+        verbose_name_plural = 'Parteneri'
+        ordering = ['order', '-is_featured', 'name']
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base = slugify(self.name)
+            slug = base
+            n = 1
+            while Partner.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f'{base}-{n}'
+                n += 1
+            self.slug = slug
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
+
+class PartnerRequest(models.Model):
+    STATUS_CHOICES = [
+        ('new', 'Nou'),
+        ('contacted', 'Contactat'),
+        ('approved', 'Aprobat'),
+        ('rejected', 'Respins'),
+    ]
+    PARTNER_TYPE_CHOICES = Partner.PARTNER_TYPE_CHOICES
+
+    business_name = models.CharField(max_length=200, verbose_name='Nume business')
+    contact_name = models.CharField(max_length=200, verbose_name='Persoană contact')
+    phone = models.CharField(max_length=30, verbose_name='Telefon')
+    partner_type = models.CharField(max_length=20, choices=PARTNER_TYPE_CHOICES, verbose_name='Tip')
+    city = models.CharField(max_length=100, blank=True, verbose_name='Oraș')
+    message = models.TextField(blank=True, verbose_name='Mesaj')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='new', verbose_name='Status')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Trimis la')
+
+    class Meta:
+        verbose_name = 'Cerere partener'
+        verbose_name_plural = 'Cereri parteneri'
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f'{self.business_name} — {self.contact_name}'
+
+
 class MemberProfile(models.Model):
     BRAND_CHOICES = [
         ('sea-doo', 'Sea-Doo'),

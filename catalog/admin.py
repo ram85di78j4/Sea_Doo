@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils import timezone
 from django.utils.html import format_html
-from .models import JetSki, JetSkiImage, ContactMessage, ForumCategory, ForumTopicPreview, ForumTopic, ForumReply, ForumReport, CommunityWaitlist, EventPreview, Testimonial, SiteSetting, MemberProfile
+from .models import JetSki, JetSkiImage, ContactMessage, ForumCategory, ForumTopicPreview, ForumTopic, ForumReply, ForumReport, CommunityWaitlist, EventPreview, Testimonial, SiteSetting, MemberProfile, Partner, PartnerRequest
 
 
 class JetSkiImageInline(admin.TabularInline):
@@ -167,6 +167,69 @@ class SiteSettingAdmin(admin.ModelAdmin):
     def value_preview(self, obj):
         return obj.value[:80] + '…' if len(obj.value) > 80 else obj.value
     value_preview.short_description = 'Valoare'
+
+
+@admin.register(Partner)
+class PartnerAdmin(admin.ModelAdmin):
+    list_display = ('logo_preview', 'name', 'partner_type', 'city', 'is_featured', 'is_active', 'order')
+    list_filter = ('partner_type', 'city', 'is_featured', 'is_active')
+    list_editable = ('is_featured', 'is_active', 'order')
+    search_fields = ('name', 'city', 'short_description')
+    readonly_fields = ('slug', 'created_at', 'updated_at', 'logo_preview', 'cover_preview')
+    ordering = ('order', '-is_featured', 'name')
+    fieldsets = (
+        ('Informații generale', {
+            'fields': ('name', 'slug', 'partner_type', 'city', 'badge_text', 'is_featured', 'is_active', 'order'),
+        }),
+        ('Descriere', {
+            'fields': ('short_description', 'full_description'),
+        }),
+        ('Contact', {
+            'fields': ('website_url', 'telegram_url', 'phone'),
+        }),
+        ('Media', {
+            'fields': ('logo', 'logo_preview', 'cover_image', 'cover_preview'),
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',),
+        }),
+    )
+
+    def logo_preview(self, obj):
+        if obj.logo:
+            return format_html('<img src="{}" style="height:40px; border-radius:4px;" />', obj.logo.url)
+        return '—'
+    logo_preview.short_description = 'Logo'
+
+    def cover_preview(self, obj):
+        if obj.cover_image:
+            return format_html('<img src="{}" style="height:60px; border-radius:4px;" />', obj.cover_image.url)
+        return '—'
+    cover_preview.short_description = 'Copertă'
+
+
+@admin.register(PartnerRequest)
+class PartnerRequestAdmin(admin.ModelAdmin):
+    list_display = ('business_name', 'contact_name', 'phone', 'partner_type', 'city', 'status', 'created_at')
+    list_filter = ('partner_type', 'status', 'city')
+    list_editable = ('status',)
+    search_fields = ('business_name', 'contact_name', 'phone', 'city')
+    readonly_fields = ('business_name', 'contact_name', 'phone', 'partner_type', 'city', 'message', 'created_at')
+    ordering = ('-created_at',)
+    actions = ['mark_contacted', 'mark_approved', 'mark_rejected']
+
+    @admin.action(description='Marchează ca Contactat')
+    def mark_contacted(self, request, queryset):
+        queryset.update(status='contacted')
+
+    @admin.action(description='Marchează ca Aprobat')
+    def mark_approved(self, request, queryset):
+        queryset.update(status='approved')
+
+    @admin.action(description='Respinge cererile selectate')
+    def mark_rejected(self, request, queryset):
+        queryset.update(status='rejected')
 
 
 @admin.register(MemberProfile)

@@ -13,8 +13,8 @@ from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
 from django.utils import timezone
 
-from .models import JetSki, ForumCategory, ForumTopicPreview, ForumTopic, ForumReply, ForumReport, CommunityWaitlist, EventPreview, Testimonial, MemberProfile
-from .forms import ContactForm, CommunityWaitlistForm, RegistrationForm, ProfileEditForm, ForumTopicForm, ForumReplyForm, ForumReportForm
+from .models import JetSki, ForumCategory, ForumTopicPreview, ForumTopic, ForumReply, ForumReport, CommunityWaitlist, EventPreview, Testimonial, MemberProfile, Partner, PartnerRequest, get_site_setting
+from .forms import ContactForm, CommunityWaitlistForm, RegistrationForm, ProfileEditForm, ForumTopicForm, ForumReplyForm, ForumReportForm, PartnerRequestForm
 
 logger = logging.getLogger(__name__)
 
@@ -56,6 +56,8 @@ def home(request):
             messages.success(request, 'Mesaj trimis. Revenim în scurt timp.')
             return redirect('home')
 
+    featured_partners = Partner.objects.filter(is_active=True).order_by('order', '-is_featured', 'name')[:6]
+
     context = {
         'featured': featured,
         'recent': recent,
@@ -63,7 +65,8 @@ def home(request):
         'forum_categories': forum_categories,
         'events': events,
         'testimonials': testimonials,
-        'HERO_VIDEO_URL': getattr(settings, 'HERO_VIDEO_URL', ''),
+        'featured_partners': featured_partners,
+        'HERO_VIDEO_URL': get_site_setting('HERO_VIDEO_URL'),
         'FORUM_EXTERNAL_URL': getattr(settings, 'FORUM_EXTERNAL_URL', ''),
     }
     return render(request, 'catalog/home.html', context)
@@ -208,6 +211,45 @@ def lead_offer(request, slug):
         messages.success(request, 'Cerere trimis\u0103. Revenim \u00een scurt timp.')
         return redirect('catalog_detail', slug=slug)
     return redirect('catalog_detail', slug=slug)
+
+
+def partner_list(request):
+    partners = Partner.objects.filter(is_active=True).order_by('order', '-is_featured', 'name')
+    ptype = request.GET.get('tip', '')
+    if ptype:
+        partners = partners.filter(partner_type=ptype)
+    partner_request_form = PartnerRequestForm()
+    if request.method == 'POST':
+        partner_request_form = PartnerRequestForm(request.POST)
+        if partner_request_form.is_valid():
+            obj = partner_request_form.save()
+            logger.info('PARTNER_REQUEST business=%s phone=%s type=%s', obj.business_name, obj.phone, obj.partner_type)
+            try:
+                _send_telegram(
+                    '\U0001f91d NOU PARTENER \u2014 SeaDoo.ro\n'
+                    f'\U0001f3e2 Business: {obj.business_name}\n'
+                    f'\U0001f464 Contact: {obj.contact_name}\n'
+                    f'\U0001f4f1 Telefon: {obj.phone}\n'
+                    f'\U0001f3f7\ufe0f Tip: {obj.get_partner_type_display()}\n'
+                    f'\U0001f4cd Ora\u0219: {obj.city or "nespecificat"}\n'
+                    f'\U0001f4ac Mesaj: {obj.message or "\u2013"}'
+                )
+            except Exception as e:
+                logger.warning('Telegram partner request failed: %s', e)
+            messages.success(request, 'Cererea a fost trimis\u0103. Te contact\u0103m \u00een cur\u00e2nd.')
+            return redirect('partner_list')
+    context = {
+        'partners': partners,
+        'partner_request_form': partner_request_form,
+        'partner_types': Partner.PARTNER_TYPE_CHOICES,
+        'selected_type': ptype,
+    }
+    return render(request, 'catalog/partner_list.html', context)
+
+
+def partner_detail(request, slug):
+    partner = get_object_or_404(Partner, slug=slug, is_active=True)
+    return render(request, 'catalog/partner_detail.html', {'partner': partner})
 
 
 def about_page(request):

@@ -1,0 +1,134 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}{{ partner.name }} — Parteneri Sea-Doo România{% endblock %}
+{% block meta_description %}{{ partner.short_description|truncatewords:25 }}{% endblock %}
+{% block og_title %}{{ partner.name }} — Sea-Doo România{% endblock %}
+{% block og_description %}{{ partner.short_description|truncatewords:25 }}{% endblock %}
+{% if partner.cover_image %}{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{{ partner.cover_image.url }}{% endblock %}{% endif %}
+
+{% block content %}
+<div class="pt-16">
+
+    <!-- Breadcrumb -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 border-b border-white/5">
+        <div class="flex items-center gap-2 text-sm text-gray-600">
+            <a href="{% url 'home' %}" class="hover:text-yellow-400 transition-colors">Acasă</a>
+            <span class="text-gray-700">›</span>
+            <a href="{% url 'partner_list' %}" class="hover:text-yellow-400 transition-colors">Parteneri</a>
+            <span class="text-gray-700">›</span>
+            <span class="text-gray-400 truncate max-w-xs">{{ partner.name }}</span>
+        </div>
+    </div>
+
+    <!-- Cover image -->
+    {% if partner.cover_image %}
+    <div class="relative h-52 md:h-72 overflow-hidden">
+        <img src="{{ partner.cover_image.url }}" alt="{{ partner.name }}"
+             class="w-full h-full object-cover opacity-60">
+        <div class="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/40 to-transparent"></div>
+    </div>
+    {% endif %}
+
+    <!-- Main content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+
+            <!-- Left: Info -->
+            <div class="lg:col-span-2">
+
+                <div class="flex items-start gap-5 mb-8">
+                    {% if partner.logo %}
+                    <img src="{{ partner.logo.url }}" alt="{{ partner.name }}"
+                         class="w-16 h-16 rounded-2xl object-cover bg-gray-800 flex-shrink-0 border border-gray-700">
+                    {% else %}
+                    <div class="w-16 h-16 bg-yellow-400/10 rounded-2xl flex items-center justify-center flex-shrink-0 border border-yellow-400/20">
+                        <svg class="w-7 h-7 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-2 5h2a2 2 0 002-2v-1H9v1a2 2 0 002 2h2z"/>
+                        </svg>
+                    </div>
+                    {% endif %}
+                    <div>
+                        <div class="flex flex-wrap items-center gap-2 mb-1">
+                            <h1 class="text-2xl md:text-3xl font-black text-white">{{ partner.name }}</h1>
+                            {% if partner.badge_text %}
+                            <span class="bg-yellow-400/10 border border-yellow-400/20 text-yellow-400/80 text-xs font-semibold px-2.5 py-0.5 rounded-full">{{ partner.badge_text }}</span>
+                            {% elif partner.is_featured %}
+                            <span class="bg-yellow-400/10 border border-yellow-400/20 text-yellow-400/80 text-xs font-semibold px-2.5 py-0.5 rounded-full">Promovat</span>
+                            {% endif %}
+                        </div>
+                        <p class="text-gray-400 text-sm">
+                            {{ partner.get_partner_type_display }}
+                            {% if partner.city %} · <span class="text-gray-500">📍 {{ partner.city }}</span>{% endif %}
+                        </p>
+                        <p class="text-gray-600 text-xs mt-1">Furnizor listat în comunitate</p>
+                    </div>
+                </div>
+
+                <!-- Short description -->
+                <p class="text-gray-300 text-base leading-relaxed mb-6 border-l-2 border-yellow-400/30 pl-4">
+                    {{ partner.short_description }}
+                </p>
+
+                <!-- Full description -->
+                {% if partner.full_description %}
+                <div class="text-gray-400 leading-relaxed text-sm mb-8 space-y-3">
+                    {{ partner.full_description|linebreaks }}
+                </div>
+                {% endif %}
+
+                <!-- Back link -->
+                <a href="{% url 'partner_list' %}"
+                   class="inline-flex items-center gap-2 text-gray-500 hover:text-white text-sm transition-colors">
+                    ← Înapoi la parteneri
+                </a>
+
+            </div>
+
+            <!-- Right: Contact sidebar -->
+            <div>
+                <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 mb-5 sticky top-24">
+                    <h2 class="text-white font-bold text-base mb-5">Contact</h2>
+                    <div class="space-y-3 mb-6">
+                        {% if partner.phone %}
+                        <a href="tel:{{ partner.phone }}"
+                           class="flex items-center gap-3 bg-gray-800 hover:bg-gray-700 border border-gray-700 hover:border-cyan-400/40 text-gray-300 hover:text-white rounded-xl px-4 py-3 transition-all text-sm font-medium">
+                            <svg class="w-4 h-4 text-cyan-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                            </svg>
+                            {{ partner.phone }}
+                        </a>
+                        {% endif %}
+                        {% if partner.telegram_url %}
+                        <a href="{{ partner.telegram_url }}" target="_blank" rel="noopener"
+                           class="flex items-center gap-3 bg-cyan-400/10 hover:bg-cyan-400/20 border border-cyan-400/20 text-cyan-300 hover:text-white rounded-xl px-4 py-3 transition-all text-sm font-medium">
+                            <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.96 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                            </svg>
+                            Scrie pe Telegram
+                        </a>
+                        {% endif %}
+                        {% if partner.website_url %}
+                        <a href="{{ partner.website_url }}" target="_blank" rel="noopener"
+                           class="flex items-center gap-3 bg-gray-800 hover:bg-gray-700 border border-gray-700 hover:border-yellow-400/40 text-gray-300 hover:text-yellow-400 rounded-xl px-4 py-3 transition-all text-sm font-medium">
+                            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                            </svg>
+                            Vizitează website-ul
+                        </a>
+                        {% endif %}
+                        {% if not partner.phone and not partner.telegram_url and not partner.website_url %}
+                        <a href="https://t.me/+44ZEVTaRYAUxYTg8" target="_blank" rel="noopener"
+                           class="flex items-center gap-3 bg-yellow-400/10 hover:bg-yellow-400/20 border border-yellow-400/20 text-yellow-400 rounded-xl px-4 py-3 transition-all text-sm font-medium">
+                            Solicită detalii prin comunitate
+                        </a>
+                        {% endif %}
+                    </div>
+                    <p class="text-gray-700 text-xs text-center">Furnizor listat de comunitate. Verificați independent înainte de orice tranzacție.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}
